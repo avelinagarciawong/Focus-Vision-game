@@ -1,0 +1,160 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #f5f7fb;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo h2 {
+    font-size: 18px;
+}
+
+.logo p {
+    font-size: 10px;
+    color: #6c7a89;
+}
+
+nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #333;
+}
+
+nav .active {
+    font-weight: bold;
+    border-bottom: 2px solid #E3F2FD;
+}
+
+.auth {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.btn-register {
+    background: #1e4db7;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* Layout */
+.container {
+    display: flex;
+    padding: 40px 60px;
+}
+
+/* Left Section */
+.left {
+    flex: 1;
+}
+
+.left h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.left p {
+    color: #555;
+}
+
+.login-link {
+    color: #7C5A90;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Image Circle Background */
+.image-wrapper {
+    margin-top: 50px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #cfe0f5, #b5cbe6);
+    border-radius: 50%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.image-wrapper img {
+    width: 80%;
+}
+
+/* Right Section */
+.right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 80px;
+}
+
+.right h2 {
+    font-size: 32px;
+    color: #7C5A90;
+    margin-bottom: 30px;
+}
+
+/* Form */
+.form {
+    width: 300px;
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-box input {
+    width: 100%;
+    padding: 12px 40px 12px 12px; 
+    border: none;
+    background: #E3F2FD;
+    outline: none;
+}
+
+/* Icon di kanan */
+.input-box img {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;   
+    height: 14px;
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+/* Button */
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #1e4db7;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
