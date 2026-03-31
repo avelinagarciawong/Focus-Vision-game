@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": "../../focuspoint"
+	},
+	{
+		"path": ".."
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "Focus-Vision-game"
+  }
+}

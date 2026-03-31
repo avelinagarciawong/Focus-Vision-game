@@ -1,167 +1,276 @@
 <!doctype html>
 <html lang="id">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
     <title>Focus Point</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="css/home.css" />
+
+    <!-- CSS kamu -->
+    <link href="css/main.css" rel="stylesheet" />
   </head>
 
-  <body>
-    <!-- NAVBAR -->
-    <header class="navbar">
-      <img src="icon/logo.png" class="main-logo" />
+  <body
+    style="font-family: &quot;Montserrat&quot;, sans-serif; background: #f5f7fb"
+  >
+    <!-- NAVBAR (VERSI BOOTSTRAP) -->
+    <div class="container-fluid sticky-top bg-white shadow-sm">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
+          <a class="navbar-brand d-flex align-items-center">
+            <img src="icon/logo.png" style="height: 40px; margin-right: 10px" />
+          </a>
 
-      <nav class="nav-menu">
-        <a class="active">Home</a>
-        <a>About Us</a>
-        <a>How to use</a>
-      </nav>
+          <button
+            class="navbar-toggler"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-      <a class="register-btn" href="register.html">Register</a>
-    </header>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto">
+              <a href="index.html" class="nav-link active">Home</a>
+              <a href="about.html" class="nav-link">About Us</a>
+              <a class="nav-link">How to use</a>
+              <a class="nav-link text-primary">Register</a>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
 
     <!-- HERO -->
-    <section class="hero">
-      <div class="hero-text">
-        <p>Welcome to</p>
-        <h1>Focus Point</h1>
-        <p>Train Your Vision, Improve Your Focus</p>
-        <a href="gameselection.html" class="try-btn">
-          <p>Try Free Games</p> </a>
-      </div>
+    <div class="container my-5">
+      <div
+        class="p-5 rounded-4 d-flex justify-content-between hero-box"
+        style="overflow: hidden"
+      >
+        <div class="d-flex flex-column justify-content-center">
+          <p class="text-muted">Welcome to</p>
+          <h1 class="fw-bold">Focus Point</h1>
+          <p class="text-muted">Train Your Vision, Improve Your Focus</p>
 
-      <img src="icon/people1.png" class="hero-img" />
-    </section>
+          <button class="btn btn-outline-primary rounded-pill px-4">
+            Try Free Games
+          </button>
+        </div>
+
+        <div class="hero-img">
+          <img src="icon/people1.png" />
+        </div>
+      </div>
+    </div>
 
     <!-- WHY -->
-    <section class="why">
-      <h2>Why Focus Point</h2>
+    <div class="container text-center my-5">
+      <h2 class="fw-bold mb-4">Why Focus Point</h2>
 
-      <div class="why-cards">
-        <div class="why-card">
-          <img src="icon/target 1.png" />
-          <p>
-            Strengthens coordination between both eyes through guided exercises.
-          </p>
+      <div class="row justify-content-center g-4">
+        <div class="col-md-3">
+          <div class="p-4 border rounded-4 bg-white text-center why-card">
+            <div class="icon-wrapper">
+              <div class="icon-bg"></div>
+              <img src="icon/target.png" class="icon-img" />
+            </div>
+            <p class="mt-4">Strengthens coordination between both eyes.</p>
+          </div>
         </div>
 
-        <div class="why-card">
-          <img src="icon/eye (3) 1.png" />
-          <p>Helps users train their eyes to stay focused and responsive.</p>
+        <div class="col-md-3">
+          <div class="p-4 border rounded-4 bg-white text-center why-card">
+            <div class="icon-wrapper">
+              <div class="icon-bg"></div>
+              <img src="icon/eye.png" class="icon-img" />
+            </div>
+            <p class="mt-4">Helps users stay focused and responsive.</p>
+          </div>
         </div>
 
-        <div class="why-card">
-          <img src="icon/game-controller 1.png" />
-          <p>
-            Makes eye therapy engaging and motivating through fun, structured
-            activities.
-          </p>
+        <div class="col-md-3">
+          <div class="p-4 border rounded-4 bg-white text-center why-card">
+            <div class="icon-wrapper">
+              <div class="icon-bg"></div>
+              <img src="icon/game-controller.png" class="icon-img" />
+            </div>
+            <p class="mt-4">Makes therapy fun and engaging.</p>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
 
     <!-- TESTIMONI -->
-    <section class="testimoni">
-      <h2>What Parents Say</h2>
+    <div class="container text-center my-5">
+      <h2 class="fw-bold mb-4">What Parents Say</h2>
 
-      <div class="testimoni-wrapper">
-        <div class="testimoni-card">
-          <p><b>“A positive and engaging experience for my child.”</b></p>
-          <p>
-            Since using Focus Point, my child has become more focused during
-            daily activities.
-          </p>
-          <span>Sarah M., Parent</span>
+      <div
+        id="testimonialCarousel"
+        class="carousel slide"
+        data-bs-ride="carousel"
+      >
+        <div class="carousel-inner">
+          <!-- SLIDE 1 -->
+          <div class="carousel-item active">
+            <div class="row justify-content-center g-4">
+              <div class="col-md-4">
+                <div class="testimonial-card text-center">
+                  <img src="icon/Profilee.png" class="testimonial-img mb-3" />
+                  <p><b>“A positive and engaging experience”</b></p>
+                  <p>My child became more focused daily.</p>
+                  <small>Sarah M., Parent</small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="testimonial-card text-center">
+                  <img src="icon/Profilee.png" class="testimonial-img mb-3" />
+                  <p><b>“A positive and engaging experience”</b></p>
+                  <p>My child became more focused daily.</p>
+                  <small>Sarah M., Parent</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 2 (TAMBAHAN) -->
+          <div class="carousel-item">
+            <div class="row justify-content-center g-4">
+              <div class="col-md-4">
+                <div class="testimonial-card text-center">
+                  <img src="icon/Profilee.png" class="testimonial-img mb-3" />
+                  <p><b>“Highly recommended”</b></p>
+                  <p>The progress is clearly visible.</p>
+                  <small>Linda K., Parent</small>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="testimonial-card text-center">
+                  <img src="icon/Profilee.png" class="testimonial-img mb-3" />
+                  <p><b>“Fun and helpful”</b></p>
+                  <p>My child never gets bored.</p>
+                  <small>Michael T., Parent</small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="testimoni-card">
-          <p><b>“Eye therapy that feels like playing.”</b></p>
-          <p>
-            My child enjoys the interactive exercises and looks forward to each
-            session.
-          </p>
-          <span>Daniel R., Parent</span>
-        </div>
+        <!-- CONTROL -->
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#testimonialCarousel"
+          data-bs-slide="prev"
+        >
+          <span class="custom-arrow">&#10094;</span>
+        </button>
+
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#testimonialCarousel"
+          data-bs-slide="next"
+        >
+          <span class="custom-arrow">&#10095;</span>
+        </button>
       </div>
-    </section>
+    </div>
 
-    <!-- VISION TRAINING GAMES (PAKAI CODE KAMU) -->
-    <section class="games">
-      <h2>VISION TRAINING GAMES</h2>
+    <!-- GAMES -->
+    <div class="container text-center my-5">
+      <h2 class="fw-bold">VISION TRAINING GAMES</h2>
 
-      <p class="games-desc">
+      <p class="text-muted">
         Eye Therapy Vision is a structured visual training method designed to
-        improve eye focus, coordination, and visual performance through guided
-        exercises.
+        improve eye focus and coordination.
       </p>
 
-      <div class="game-container">
+      <div class="row justify-content-center mt-4">
         <!-- CARD 1 -->
-        <div class="game-card">
-          <div class="card-icon">
-            <img src="icon/Icon_PencilPushUp.png" />
+        <div class="col-md-3">
+          <div class="game-card p-4 bg-white rounded-4 d-flex flex-column">
+            <img
+              src="icon/Icon_PencilPushUp.png"
+              class="mx-auto d-block mb-2"
+              width="50"
+            />
+
+            <span class="d-block text-primary mt-2">Level 1</span>
+
+            <h5>Pencil Push-Up</h5>
+
+            <p>Follow moving objects with your eyes.</p>
+
+            <div class="d-flex justify-content-between text-muted small">
+              <span>Beginner</span>
+              <span>4 min</span>
+            </div>
+
+            <button class="btn btn-primary w-100 mt-auto">▶ Let's Play</button>
           </div>
-
-          <span class="level">Level 1</span>
-
-          <h3>Pencil Push-Up</h3>
-
-          <p>Follow moving objects with your eyes to improve tracking.</p>
-
-          <div class="meta">
-            <span>Beginner</span>
-            <span>4 minutes</span>
-          </div>
-
-          <a href="start_game_pencil_push_up.html" class="play-btn">▶ Let's Play</a>
         </div>
 
         <!-- CARD 2 -->
-        <div class="game-card">
-          <div class="card-icon">
-            <img src="icon/Icon_BordieStrings.png" />
+        <div class="col-md-3">
+          <div class="game-card p-4 bg-white rounded-4 d-flex flex-column">
+            <img
+              src="icon/Icon_BordieStrings.png"
+              class="mx-auto d-block mb-2"
+              width="50"
+            />
+
+            <span class="d-block text-primary mt-2">Level 1</span>
+
+            <h5>Brock String</h5>
+
+            <p>Improve eye coordination.</p>
+
+            <div class="d-flex justify-content-between text-muted small">
+              <span>Beginner</span>
+              <span>5 min</span>
+            </div>
+
+            <button class="btn btn-primary w-100 mt-auto">▶ Let's Play</button>
           </div>
-
-          <span class="level">Level 1</span>
-
-          <h3>Brock String</h3>
-
-          <p>Dynamic string background training to improve eye tracking.</p>
-
-          <div class="meta">
-            <span>Beginner</span>
-            <span>5 minutes</span>
-          </div>
-
-          <a href="start_game_bordie_strings.html" class="play-btn">▶ Let's Play</a>
         </div>
 
         <!-- CARD 3 -->
-        <div class="game-card">
-          <div class="card-icon">
-            <img src="icon/Icon_BarrelCards.png" />
+        <div class="col-md-3">
+          <div class="game-card p-4 bg-white rounded-4 d-flex flex-column">
+            <img
+              src="icon/Icon_BarrelCards.png"
+              class="mx-auto d-block mb-2"
+              width="50"
+            />
+
+            <span class="d-block text-primary mt-2">Level 1</span>
+
+            <h5>Barrel Cards</h5>
+
+            <p>Strengthen focusing ability.</p>
+
+            <div class="d-flex justify-content-between text-muted small">
+              <span>Beginner</span>
+              <span>5 min</span>
+            </div>
+
+            <button class="btn btn-primary w-100 mt-auto">▶ Let's Play</button>
           </div>
-
-          <span class="level">Level 1</span>
-
-          <h3>Barrel Cards</h3>
-
-          <p>Strengthen and focusing ability with simple exercises.</p>
-
-          <div class="meta">
-            <span>Beginner</span>
-            <span>5 minutes</span>
-          </div>
-
-          <a href="start_game_barrel_cards.html" class="play-btn">▶ Let's Play</a>
         </div>
       </div>
-    </section>
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

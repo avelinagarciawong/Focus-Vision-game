@@ -1,0 +1,217 @@
+/* ================= ROOT & COLOR ================= */
+:root {
+  --primary: #13c5dd;
+  --secondary: #354f8e;
+  --light: #eff5f9;
+  --dark: #1d2a4d;
+}
+
+/* ================= GLOBAL ================= */
+body {
+  font-family: "Montserrat", sans-serif;
+  background: #f5f7fb;
+}
+
+/* ================= NAVBAR ================= */
+.navbar-light .navbar-nav .nav-link {
+  margin-left: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.navbar-light .navbar-nav .nav-link.active {
+  color: var(--primary);
+}
+
+/* ================= HERO ================= */
+.hero-box {
+  background: #dce9f9;
+  border-radius: 20px;
+  min-height: 320px;
+  position: relative; /* penting */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.hero-img {
+  position: absolute;
+  bottom: 0; /* ini kunci supaya nempel */
+  right: 40px;
+}
+
+.hero-img img {
+  height: 350px;
+}
+/* ================= WHY SECTION ================= */
+.why-card {
+  transition: 0.3s;
+}
+
+.why-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ICON */
+.icon-wrapper {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+}
+
+.icon-bg {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, #cfe2ff, #a9c9ff);
+  border-radius: 50%;
+}
+
+.icon-img {
+  width: 35px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.testimonial-card {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  min-height: 220px; /* bikin lebih tinggi */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  transition: 0.3s;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+}
+.testimonial-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #13c5dd;
+}
+.carousel-control-prev,
+.carousel-control-next {
+  width: auto;
+}
+
+.custom-arrow {
+  font-size: 28px;
+  background: white;
+  color: #13c5dd;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.custom-arrow:hover {
+  background: #13c5dd;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* ================= GAME CARD ================= */
+.game-card {
+  transition: 0.3s;
+}
+
+.game-card {
+  transition: 0.3s;
+  min-height: 380px; /* tambah tinggi */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.game-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Biar teks stabil */
+.game-card p {
+  min-height: 60px;
+}
+
+/* Biar lebih rapi */
+.game-card h5 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.row > div {
+  display: flex;
+}
+.btn-primary {
+  background-color: #709dd4;
+  border-color: #709dd4;
+}
+
+.btn-primary:hover {
+  background-color: #5a84b8; /* versi lebih gelap saat hover */
+  border-color: #5a84b8;
+}
+/* FEATURE BOX STYLE (MEDINOVA STYLE) */
+
+/* Pastikan feature box punya tinggi yang sama dan konten di tengah */
+.feature-box {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eef2f7;
+  transition: 0.3s;
+}
+
+.feature-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.feature-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #cfe2ff, #a9c9ff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.feature-icon img {
+  width: 25px;
+}
+
+.feature-box p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0;
+  color: #1d2a4d;
+}
+/* Memperbaiki tampilan footer agar memenuhi layar */
+footer {
+  width: 100%;
+  margin-top: 50px;
+}
+
+.about-title {
+  max-width: 100%;
+  line-height: 1.3;
+}
