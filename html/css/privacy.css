@@ -47,29 +47,23 @@ body {
 .content-wrapper {
     display: flex;
     justify-content: center;
-    align-items: stretch; /* KUNCI: Membuat sidebar & card tingginya sama */
+    align-items: stretch;
+    /* KUNCI: Membuat sidebar & card tingginya sama */
     gap: 30px;
     padding: 40px 10%;
 }
 
 /* --- SIDEBAR --- */
 .sidebar {
-    background-color: #e3f2fd; 
-    padding: 40px 15px;
+    background-color: #e3f2fd;
     border-radius: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100px;        
+    justify-content: space-between;
     padding: 40px 25px;
-    box-shadow: 30px 20px 20px rgba(0, 0, 0, 0.15);
-    
-    /* MENYEBARKAN IKON */
-    justify-content: space-between; 
-    
     width: 85px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    /* Hapus properti height tetap agar mengikuti stretch dari parent */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 /* Sisi Ikon */
@@ -77,17 +71,21 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 5px;
-    height: 55px;
-}
-
-.side-item.active {
-    
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
 }
 
+.side-item.active {
+    background-color: var(--primary-blue);
+}
+
+.side-item.active img {
+    filter: brightness(0) invert(1);
+}
+
 .side-item img {
-    width: 50px;
+    width: 35px;
     height: auto;
 }
 
@@ -96,9 +94,14 @@ body {
     background: white;
     padding: 60px;
     border-radius: 30px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
     flex: 1;
+    width: 100%;
     max-width: 900px;
+    min-height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .card-header {
@@ -123,7 +126,8 @@ body {
 .input-stack {
     display: flex;
     flex-direction: column;
-    gap: 40px; /* Jarak antar baris input */
+    gap: 40px;
+    /* Jarak antar baris input */
 }
 
 .full-width {
@@ -131,8 +135,10 @@ body {
 }
 
 .input-group input[type="password"] {
-    letter-spacing: 3px; /* Membuat titik-titik password terlihat lebih rapi */
+    letter-spacing: 3px;
+    /* Membuat titik-titik password terlihat lebih rapi */
 }
+
 /* Form Styles */
 .input-grid {
     display: grid;
