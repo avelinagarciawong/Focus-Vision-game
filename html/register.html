@@ -1,69 +1,108 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Focus Point - Register</title>
-    <link rel="stylesheet" href="css/register.css">
-</head>
-<body>
 
-    <!-- Navbar -->
-    <header class="navbar">
-        <div class="logo">
-            <img src="icon/logo.png" class="logo-icon">
-        </div>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
 
-        <nav>
-            <a class="active" href="#">Home</a>
-            <a href="#">About Us</a>
-            <a href="#">How to use</a>
+    <!-- Font  -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/register.css" />
+  </head>
+  <body>
+    <!-- ✅ NAVBAR (SAMA PERSIS) -->
+    <div class="container-fluid sticky-top bg-white shadow-sm">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
+          <a class="navbar-brand d-flex align-items-center" href="home.html">
+            <img src="icon/logo.png" style="height: 40px; margin-right: 10px" />
+          </a>
+
+          <button
+            class="navbar-toggler"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto">
+              <a href="home.html" class="nav-link">Home</a>
+              <a href="about.html" class="nav-link">About Us</a>
+              <a href="#" class="nav-link">How to use</a>
+            </div>
+          </div>
         </nav>
+      </div>
+    </div>
 
-        <div class="auth">
-            <a href="login.html">Sign In</a>
-            <button class="btn-register">Register</button>
-        </div>
-    </header>
+    <!-- ✅ REGISTER -->
+    <section class="login-wrapper">
+      <div class="login-card">
+        <div class="login-content">
+          <!-- LEFT -->
+          <div class="left">
+            <h1>Create an account<br />to get started.</h1>
 
-    <!-- Main Content -->
-    <section class="container">
-
-        <!-- Left -->
-        <div class="left">
-            <h1>Create an account<br>to get started.</h1>
-            <p>Already have an account? 
-            <a href="login.html" class="login-link">Log in here.</a> </p>
+            <p>
+              Already have an account?<br />
+              <a href="login.html" class="register-link">Log in here.</a>
+            </p>
 
             <div class="image-wrapper">
-                <img src="icon/gambarprofile.png" class="profile-icon">
+              <img src="icon/gambarprofile.png" class="profile-icon" />
             </div>
-        </div>
+          </div>
 
-        <!-- Right -->
-        <div class="right">
-            <h2>Hello</h2>
+          <!-- RIGHT -->
+          <div class="right">
+            <!-- SWITCH (REGISTER AKTIF) -->
+            <div class="auth-switch mb-4">
+              <a href="login.html" class="auth-btn">Sign In</a>
+              <a href="register.html" class="auth-btn active">Register</a>
+            </div>
+
+            <h2 class="mb-4">Create Account</h2>
 
             <form class="form" action="login.html">
-                <div class="input-box">
-                    <input type="text" placeholder="Enter Username" required>
-                    <img src="icon/icon_x.png" class="x-icon">
-                </div>
+              <div class="input-box">
+                <input type="text" placeholder="Enter Username" required />
+                <img src="icon/icon_x.png" />
+              </div>
 
-                <div class="input-box">
-                    <input type="email" placeholder="Enter Email" required>
-                    <img src="icon/icon_x.png" class="x-icon">
-                </div>
+              <div class="input-box">
+                <input type="email" placeholder="Enter Email" required />
+                <img src="icon/icon_x.png" />
+              </div>
 
-                <div class="input-box">
-                    <input type="password" placeholder="••••••••" required>
-                    <img src="icon/icon_password.png" class="password-icon">
-                </div>
+              <div class="input-box">
+                <input type="password" placeholder="••••••••" required />
+                <img src="icon/icon_password.png" />
+              </div>
 
-                <button type="submit" class="submit-btn">Register</button>
+              <button type="submit" class="submit-btn">Register</button>
+
+              <div class="divider">Or continue with</div>
             </form>
-        </div>
 
+            <div class="social-login">
+              <button><img src="icon/icon_google.png" /></button>
+              <button><img src="icon/icon_apple.png" /></button>
+              <button><img src="icon/icon_facebook.png" /></button>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>

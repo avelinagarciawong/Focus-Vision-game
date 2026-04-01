@@ -1,77 +1,106 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Focus Point - Login</title>
-    <link rel="stylesheet" href="css/login.css">
-</head>
-<body>
 
-    <!-- Navbar -->
-    <header class="navbar">
-        <div class="logo">
-            <img src="icon/logo.png" class="logo-icon">
-        </div>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font  -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-        <nav>
-            <a class="active" href="#">Home</a>
-            <a href="#">About Us</a>
-            <a href="#">How to use</a>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/login.css" />
+  </head>
+  <body>
+    <!-- ✅ NAVBAR (SAMA DENGAN HOME) -->
+    <div class="container-fluid sticky-top bg-white shadow-sm">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
+          <a class="navbar-brand d-flex align-items-center" href="home.html">
+            <img src="icon/logo.png" style="height: 40px; margin-right: 10px" />
+          </a>
+
+          <button
+            class="navbar-toggler"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- INI YANG PENTING -->
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto">
+              <a href="home.html" class="nav-link">Home</a>
+              <a href="about.html" class="nav-link">About Us</a>
+              <a href="#" class="nav-link">How to use</a>
+            </div>
+          </div>
         </nav>
+      </div>
+    </div>
 
-        <div class="auth">
-            <button class="btn-signin">Sign In</button>
-            <a href="register.html">Register</a>
-        </div>
-    </header>
+    <!-- ✅ LOGIN -->
+    <section class="login-wrapper">
+      <div class="login-card">
+        <div class="login-content">
+          <!-- LEFT -->
+          <div class="left">
+            <h1>Sign In to<br />get your nutrients</h1>
 
-    <!-- Main Content -->
-    <section class="container">
-
-        <!-- Left -->
-        <div class="left">
-            <h1>Sign In to<br>get your nutrients</h1>
-            <p>If you don't have an account.<br>
-                You can <a href="register.html" span class="register-link">Register here !</span> </a>
+            <p>
+              If you don't have an account.<br />
+              You can
+              <a href="register.html" class="register-link">Register here !</a>
             </p>
 
             <div class="image-wrapper">
-                <img src="icon/gambarprofile.png" class="profile-icon">
+              <img src="icon/gambarprofile.png" class="profile-icon" />
             </div>
-        </div>
+          </div>
 
-        <!-- Right -->
-        <div class="right">
-            <h2>Welcome Back</h2>
+          <!-- RIGHT -->
+          <div class="right">
+            <!-- SWITCH BUTTON -->
+            <div class="auth-switch mb-4">
+              <a href="login.html" class="auth-btn active">Sign In</a>
+              <a href="register.html" class="auth-btn">Register</a>
+            </div>
+
+            <h2 class="mb-4">Welcome Back</h2>
 
             <form class="form" action="home.html">
+              <div class="input-box">
+                <input type="email" placeholder="Enter Email" required />
+                <img src="icon/icon_x.png" />
+              </div>
 
-                <div class="input-box">
-                    <input type="email" placeholder="Enter Email" required>
-                    <img src="icon/icon_x.png" class="x-icon">
-                </div>
+              <div class="input-box">
+                <input type="password" placeholder="••••••••" required />
+                <img src="icon/icon_password.png" />
+              </div>
 
-                <div class="input-box">
-                    <input type="password" placeholder="••••••••" required>
-                    <img src="icon/icon_password.png" class="password-icon">
-                </div>
+              <p class="forgot-password">Recover Password ?</p>
 
-                <p class="forgot-password">Recover Password ?</p>
+              <button class="submit-btn" type="submit">Sign In</button>
 
-                <button class="submit-btn" type="submit">Sign In</button>
-
-                <div class="divider">Or continue with</div>
+              <div class="divider">Or continue with</div>
             </form>
 
             <div class="social-login">
-                <button><img src="icon/icon_google.png"></button>
-                <button><img src="icon/icon_apple.png"></button>
-                <button><img src="icon/icon_facebook.png"></button>
+              <button><img src="icon/icon_google.png" /></button>
+              <button><img src="icon/icon_apple.png" /></button>
+              <button><img src="icon/icon_facebook.png" /></button>
             </div>
-
+          </div>
         </div>
-
+      </div>
     </section>
 
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
