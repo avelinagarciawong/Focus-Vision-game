@@ -150,9 +150,7 @@ body {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-.row > div {
-  display: flex;
-}
+
 .btn-primary {
   background-color: #709dd4;
   border-color: #709dd4;
@@ -161,6 +159,10 @@ body {
 .btn-primary:hover {
   background-color: #5a84b8; /* versi lebih gelap saat hover */
   border-color: #5a84b8;
+}
+.col-lg-7 {
+  display: flex;
+  flex-direction: column;
 }
 /* FEATURE BOX STYLE (MEDINOVA STYLE) */
 
