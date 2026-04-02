@@ -1,0 +1,163 @@
+/* ================= GLOBAL ================= */
+body {
+  font-family: "Montserrat", sans-serif;
+  background: #f5f7fb;
+}
+
+/* ================= NAVBAR ================= */
+.navbar,
+.navbar * {
+  font-family: "Montserrat", sans-serif;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  margin-left: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1d2a4d;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  color: #13c5dd;
+}
+
+.navbar-light .navbar-nav .nav-link.active {
+  color: #13c5dd;
+}
+
+.navbar {
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+}
+
+/* BUTTON REGISTER */
+.btn-primary {
+  background-color: #709dd4;
+  border-color: #709dd4;
+}
+
+.btn-primary:hover {
+  background-color: #5a84b8;
+  border-color: #5a84b8;
+}
+
+/* ================= HERO ================= */
+.hero {
+  text-align: center;
+  padding: 60px 20px;
+  background: radial-gradient(circle, #dbe6f5 0%, #f6f7f9 70%);
+}
+
+.hero h1 {
+  font-size: 28px;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  color: #7a7a7a;
+  max-width: 600px;
+  margin: auto;
+}
+
+/* ================= GAME CONTAINER ================= */
+.game-container {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  padding: 40px;
+  flex-wrap: wrap;
+}
+
+/* ================= GAME CARD ================= */
+.game-card {
+  width: 270px; /* LEBIH LEBAR */
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+
+  transition: all 0.3s ease;
+
+  /* KUNCI AGAR TOMBOL SEJAJAR */
+  display: flex;
+  flex-direction: column;
+}
+
+.game-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+/* ICON */
+.card-icon {
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #6ea8fe, #4e7dd1);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-icon img {
+  width: 28px;
+}
+
+/* LEVEL */
+.level {
+  display: inline-block;
+  background: #e9eef7;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  margin: 10px 0;
+}
+
+/* TITLE */
+.game-card h3 {
+  margin: 8px 0;
+  font-weight: 700;
+  color: #1d2a4d;
+}
+
+/* DESCRIPTION */
+.game-card p {
+  font-size: 13px;
+  color: #6b6b6b;
+  min-height: 50px; /* BIAR RATA */
+}
+
+/* META */
+.meta {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-size: 12px;
+  color: #777;
+  margin: 10px 0 20px 0;
+}
+
+/* ================= BUTTON ================= */
+.play-btn {
+  margin-top: auto; /* INI YANG BIKIN SEJAJAR */
+  background: #709dd4;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.play-btn:hover {
+  background: #5a84b8;
+  transform: scale(1.05);
+}
