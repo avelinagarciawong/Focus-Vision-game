@@ -1,3 +1,41 @@
+<?php
+session_start();
+
+// koneksi database
+$conn = new mysqli("localhost", "root", "", "focus_point");
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$error = "";
+
+// proses login
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = trim($_POST['email']);
+    $password = trim($_POST['password']);
+
+    $result = $conn->query("SELECT * FROM users WHERE email='$email'");
+
+    if ($result && $result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+
+        echo "Input Password: " . $password . "<br>";
+        echo "Hash DB: " . $user['password'] . "<br>";
+
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['user'] = $user['username'];
+            header("Location: home.php");
+            exit();
+        } else {
+            echo "Password salah!";
+        } exit();
+    } else {
+        echo "Email tidak ditemukan!";
+    }
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -35,7 +73,7 @@
           <!-- INI YANG PENTING -->
           <div class="collapse navbar-collapse" id="navbarNav">
             <div class="navbar-nav ms-auto">
-              <a href="home.html" class="nav-link">Home</a>
+              <a href="home.php" class="nav-link">Home</a>
               <a href="about.html" class="nav-link">About Us</a>
               <a href="#" class="nav-link">How to use</a>
             </div>
@@ -55,7 +93,7 @@
             <p>
               If you don't have an account.<br />
               You can
-              <a href="register.html" class="register-link">Register here !</a>
+              <a href="register.php" class="register-link">Register here !</a>
             </p>
 
             <div class="image-wrapper">
@@ -67,20 +105,25 @@
           <div class="right">
             <!-- SWITCH BUTTON -->
             <div class="auth-switch mb-4">
-              <a href="login.html" class="auth-btn active">Sign In</a>
-              <a href="register.html" class="auth-btn">Register</a>
+              <a href="login.php" class="auth-btn active">Sign In</a>
+              <a href="register.php" class="auth-btn">Register</a>
             </div>
 
             <h2 class="mb-4">Welcome Back</h2>
 
-            <form class="form" action="home.html">
+            <!-- ERROR MESSAGE -->
+            <?php if ($error): ?>
+                <p style="color:red; margin-bottom:10px;"><?php echo $error; ?></p>
+            <?php endif; ?>
+
+            <form class="form" method="POST" action="login.php">
               <div class="input-box">
-                <input type="email" placeholder="Enter Email" required />
+                <input type="email" name="email" placeholder="Enter Email" required />
                 <img src="icon/icon_x.png" />
               </div>
 
               <div class="input-box">
-                <input type="password" placeholder="••••••••" required />
+                <input type="password" name="password" placeholder="••••••••" required />
                 <img src="icon/icon_password.png" />
               </div>
 

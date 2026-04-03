@@ -1,3 +1,38 @@
+<?php
+session_start();
+
+$conn = new mysqli("localhost", "root", "", "focus_point");
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+
+$error = "";
+
+// proses register
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    $check = $conn->query("SELECT * FROM users WHERE email='$email'");
+
+    if ($check->num_rows > 0) {
+        echo "Email sudah terdaftar!";
+    } else {
+        if ($conn->query("INSERT INTO users (username, email, password)
+                  VALUES ('$username', '$email', '$password')")) {
+            header("Location: login.php");
+            exit();
+        } else {
+            echo "ERROR: " . $conn->error;
+        }
+        exit();
+    }
+}
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -35,7 +70,7 @@
 
           <div class="collapse navbar-collapse" id="navbarNav">
             <div class="navbar-nav ms-auto">
-              <a href="home.html" class="nav-link">Home</a>
+              <a href="home.php" class="nav-link">Home</a>
               <a href="about.html" class="nav-link">About Us</a>
               <a href="#" class="nav-link">How to use</a>
             </div>
@@ -54,7 +89,7 @@
 
             <p>
               Already have an account?<br />
-              <a href="login.html" class="register-link">Log in here.</a>
+              <a href="login.php" class="register-link">Log in here.</a>
             </p>
 
             <div class="image-wrapper">
@@ -66,25 +101,30 @@
           <div class="right">
             <!-- SWITCH (REGISTER AKTIF) -->
             <div class="auth-switch mb-4">
-              <a href="login.html" class="auth-btn">Sign In</a>
-              <a href="register.html" class="auth-btn active">Register</a>
+              <a href="login.php" class="auth-btn">Sign In</a>
+              <a href="register.php" class="auth-btn active">Register</a>
             </div>
 
             <h2 class="mb-4">Create Account</h2>
 
-            <form class="form" action="login.html">
+            <!-- ERROR MESSAGE -->
+            <?php if ($error): ?>
+                <p style="color:red; margin-bottom:10px;"><?php echo $error; ?></p>
+            <?php endif; ?>
+
+            <form class="form" method="POST" action="register.php">
               <div class="input-box">
-                <input type="text" placeholder="Enter Username" required />
+                <input type="text" name="username" placeholder="Enter Username" required />
                 <img src="icon/icon_x.png" />
               </div>
 
               <div class="input-box">
-                <input type="email" placeholder="Enter Email" required />
+                <input type="email" name="email" placeholder="Enter Email" required />
                 <img src="icon/icon_x.png" />
               </div>
 
               <div class="input-box">
-                <input type="password" placeholder="••••••••" required />
+                <input type="password" name="password" placeholder="••••••••" required />
                 <img src="icon/icon_password.png" />
               </div>
 
