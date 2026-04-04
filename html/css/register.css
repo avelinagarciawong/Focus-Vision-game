@@ -20,7 +20,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   min-height: 90vh;
-  padding-top: 120px;
+  margin-top: 25px;
 }
 
 /* CARD */
@@ -45,7 +45,7 @@ body {
 }
 
 .left h1 {
-  font-size: 42px;
+  font-size: 48px;
   margin-bottom: 20px;
 }
 
@@ -67,8 +67,8 @@ body {
 /* IMAGE */
 .image-wrapper {
   margin-top: 50px;
-  width: 380px;
-  height: 380px;
+  width: 400px;
+  height: 400px;
   background: radial-gradient(circle, #cfe0f5, #b5cbe6);
   border-radius: 50%;
   display: flex;

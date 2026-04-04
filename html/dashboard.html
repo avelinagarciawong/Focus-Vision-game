@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard - Focus Point</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+    <link href="css/dashboard.css" rel="stylesheet" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <div class="container-fluid sticky-top bg-white shadow-sm">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
+          <a class="navbar-brand">
+            <img src="icon/logo.png" style="height: 40px" />
+          </a>
+
+          <button
+            class="navbar-toggler"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto align-items-center">
+              <a href="home2.html" class="nav-link">Home</a>
+              <a href="games2.html" class="nav-link">Games</a>
+              <a href="dashboard.html" class="nav-link active">Dashboard</a>
+
+              <div class="ms-3 d-flex align-items-center">
+                <img src="icon/Profilee.png" class="profile-img" />
+                <span class="ms-2 fw-semibold">Username</span>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="container my-5">
+      <h3 class="text-center fw-bold mb-4">REPORT HISTORY</h3>
+
+      <!-- TOP STATS -->
+      <div class="row g-4 mb-4">
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div>
+              <h5>Daily Streak</h5>
+              <p>10</p>
+            </div>
+            <div class="icon-circle">🔥</div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div>
+              <h5>Time Spent</h5>
+              <p>20 minutes</p>
+            </div>
+            <div class="icon-circle">⏱</div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="stat-card">
+            <div>
+              <h5>Total Games</h5>
+              <p>2</p>
+            </div>
+            <div class="icon-circle">🎮</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORY LIST -->
+      <div class="history-card">
+        <div class="history-item">
+          <div class="history-left">
+            <div class="history-icon">✏️</div>
+            <div>
+              <b>Pencil Push Up</b>
+              <p>Eye Movement • 11-01-2026 - 11:49</p>
+            </div>
+          </div>
+          <span>15 minutes</span>
+        </div>
+
+        <div class="history-item">
+          <div class="history-left">
+            <div class="history-icon">🔗</div>
+            <div>
+              <b>Bordie String</b>
+              <p>Eye Movement • 11-01-2026 - 12:49</p>
+            </div>
+          </div>
+          <span>5 minutes</span>
+        </div>
+      </div>
+
+      <!-- CHART SECTION -->
+      <div class="row mt-4 g-4">
+        <div class="col-md-6">
+          <div class="chart-card">
+            <h5>Therapy Duration</h5>
+            <div class="fake-chart bar-chart"></div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="chart-card">
+            <h5>Minutes Spent Over Time</h5>
+            <div class="fake-chart line-chart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

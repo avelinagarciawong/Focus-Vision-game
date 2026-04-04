@@ -23,7 +23,13 @@ body {
 .navbar-light .navbar-nav .nav-link.active {
   color: var(--primary);
 }
-
+.profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #13c5dd;
+  object-fit: cover;
+}
 /* ================= HERO ================= */
 .hero-box {
   background: #dce9f9;
