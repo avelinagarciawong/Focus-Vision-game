@@ -1,78 +1,108 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Focus Point - Privacy</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/privacy.css">
-</head>
-<body>
 
-    <header class="navbar">
-        <div class="logo-container">
-            <img src="icon/logo.png" alt="Focus Point Logo" class="main-logo">
-        </div>
-        <nav class="nav-menu">
-            <a href="home.html">Home</a>
-            <a href="#">About Us</a>
-            <a href="#">How to use</a>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Main CSS (navbar dll) -->
+    <link href="css/main.css" rel="stylesheet" />
+
+    <!-- Profile CSS -->
+    <link rel="stylesheet" href="css/privacy.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body
+    style="background: #f5f7fb; font-family: &quot;Montserrat&quot;, sans-serif"
+  >
+    <!-- NAVBAR (SAMA KAYAK HOME2) -->
+    <div class="container-fluid sticky-top bg-white shadow-sm">
+      <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light py-3">
+          <a class="navbar-brand">
+            <img src="icon/logo.png" style="height: 40px" />
+          </a>
+
+          <button
+            class="navbar-toggler"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="navbar-nav ms-auto align-items-center">
+              <a href="home2.html" class="nav-link">Home</a>
+              <a href="games2.html" class="nav-link">Games</a>
+              <a href="dashboard.html" class="nav-link">Dashboard</a>
+
+              <!-- PROFILE -->
+              <div class="ms-3 d-flex align-items-center">
+                <img src="icon/Profilee.png" class="profile-img" />
+                <span class="ms-2 fw-semibold">Username</span>
+              </div>
+            </div>
+          </div>
         </nav>
-        <div class="top-user-icon">
-            <img src="icon/profileA.png" alt="User Icon">
-        </div>
-    </header>
+      </div>
+    </div>
 
     <main class="content-wrapper">
-        <aside class="sidebar">
-            <div class="side-item">
-                <a href="profile.html">
-                    <img src="icon/profil.png" alt="Profile">
-                </a>
-            </div>
-            <div class="side-item">
-                <a href="notification.html">
-                    <img src="icon/notif.png" alt="Notification">
-                </a>
-            </div>
-            <div class="side-item active">
-                <a href="privacy.html">
-                    <img src="icon/privacy.png" alt="Security">
-                </a>
-            </div>
-        </aside>
+      <aside class="sidebar">
+        <div class="side-item">
+          <a href="profile.html">
+            <img src="icon/profil.png" alt="Profile" />
+          </a>
+        </div>
+        <div class="side-item">
+          <a href="notification.html">
+            <img src="icon/notif.png" alt="Notification" />
+          </a>
+        </div>
+        <div class="side-item active">
+          <a href="privacy.html">
+            <img src="icon/privacy.png" alt="Security" />
+          </a>
+        </div>
+      </aside>
 
-        <section class="privacy-card">
+      <section class="privacy-card">
         <div class="card-header">
-            <h1>Change password</h1>
+          <h1>Change password</h1>
         </div>
 
         <form class="privacy-form">
-            <div class="input-grid">
-                    <div class="input-stack">
-                <div class="input-group full-width">
-                    <label>Current password</label>
-                    <input type="password">
-                </div>
-                <div class="input-group full-width">
-                    <label>New password</label>
-                    <input type="password">
-                </div>
-                <div class="input-group full-width">
-                    <label>Re-type new password</label>
-                    <input type="password">
-                </div>
+          <div class="input-grid">
+            <div class="input-stack">
+              <div class="input-group full-width">
+                <label>Current password</label>
+                <input type="password" />
+              </div>
+              <div class="input-group full-width">
+                <label>New password</label>
+                <input type="password" />
+              </div>
+              <div class="input-group full-width">
+                <label>Re-type new password</label>
+                <input type="password" />
+              </div>
             </div>
-                </div>
-            
-            <div class="form-action">
-                <button type="submit" class="save-btn">Save Changes</button>
-            </div>
-            
-            
-        </form>
-    </section>
-    </main>
+          </div>
 
-</body>
+          <div class="form-action">
+            <button type="submit" class="save-btn">Save Changes</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </body>
 </html>

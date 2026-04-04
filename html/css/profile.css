@@ -1,175 +1,177 @@
 :root {
-    --bg-color: #e3f2fd;
-    --primary-blue: #0d47a1;
-    --text-dark: #333;
+  --bg-color: #e3f2fd;
+  --primary-blue: #0d47a1;
+  --text-dark: #333;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-dark);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  font-family: "Montserrat", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Navbar */
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 80px;
-    background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 80px;
+  background: transparent;
 }
 
 .main-logo {
-    height: 50px;
+  height: 50px;
 }
 
 .nav-menu a {
-    text-decoration: none;
-    color: #444;
-    margin: 0 20px;
-    font-weight: 500;
+  text-decoration: none;
+  color: #444;
+  margin: 0 20px;
+  font-weight: 500;
 }
 
 .top-user-icon img {
-    width: 45px;
+  width: 45px;
 }
 
 /* --- LAYOUT UTAMA --- */
 .content-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: stretch;
-    /* KUNCI: Membuat sidebar & card tingginya sama */
-    gap: 30px;
-    padding: 40px 10%;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  /* KUNCI: Membuat sidebar & card tingginya sama */
+  gap: 30px;
+  padding: 40px 10%;
 }
 
 /* --- SIDEBAR --- */
 .sidebar {
-    background-color: #e3f2fd;
-    border-radius: 100px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 40px 25px;
-    width: 85px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  background-color: #e3f2fd;
+  border-radius: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40px 25px;
+  width: 85px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
 }
 
 /* Sisi Ikon */
 .side-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
 }
 
 .side-item.active {
-    background-color: var(--primary-blue);
+  background-color: var(--primary-blue);
 }
 
 .side-item.active img {
-    filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
 }
 
 .side-item img {
-    width: 35px;
-    height: auto;
+  width: 35px;
+  height: auto;
 }
 
 /* Profile Card */
 .profile-card {
-    background: white;
-    padding: 60px;
-    border-radius: 30px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
-    flex: 1;
-    width: 100%;
-    max-width: 900px;
-    min-height: 700px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  background: white;
+  padding: 60px;
+  border-radius: 30px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  flex: 1;
+  width: 100%;
+  max-width: 900px;
+  min-height: 700px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
 }
 
 .card-header h1 {
-    font-size: 3rem;
-    font-weight: 700;
+  font-size: 3rem;
+  font-weight: 700;
 }
 
 .user-avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
 }
 
 /* Form Styles */
 .input-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
 }
 
 .input-group label {
-    display: block;
-    font-size: 0.9rem;
-    color: #666;
-    margin-bottom: 10px;
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 10px;
 }
 
 .input-group input {
-    width: 100%;
-    padding: 15px 0;
-    border: none;
-    border-bottom: 1.5px solid #ccc;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s;
+  width: 100%;
+  padding: 15px 0;
+  border: none;
+  border-bottom: 1.5px solid #ccc;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s;
 }
 
 .input-group input:focus {
-    border-bottom-color: var(--primary-blue);
+  border-bottom-color: var(--primary-blue);
 }
 
 .form-action {
-    margin-top: 50px;
-    display: flex;
-    justify-content: center;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
 }
 
 .save-btn {
-    background-color: var(--primary-blue);
-    color: white;
-    border: none;
-    padding: 15px 50px;
-    border-radius: 10px;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.2s, background 0.3s;
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 15px 50px;
+  border-radius: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    transform 0.2s,
+    background 0.3s;
 }
 
 .save-btn:hover {
-    background-color: #0a3d8a;
-    transform: scale(1.02);
+  background-color: #0a3d8a;
+  transform: scale(1.02);
 }
