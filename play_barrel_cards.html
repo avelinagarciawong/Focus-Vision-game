@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Barrel Cards</title>
+<link rel="stylesheet" href="html/css/playgame.css">
+
+<!-- WebSocket -->
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+    <div class="card">
+
+        <!-- Header -->
+        <div class="top-section">
+
+            <div class="left">
+                <h2>Barrel Cards</h2>
+
+                <div class="buttons">
+                    <button class="btn">
+                        <img src="html/icon/Pause.png" class="pause-icon" alt="pause"> Pause
+                    </button>
+                    <button class="btn">
+                        <img src="html/icon/Reset.png" class="reset-icon" alt="reset"> Reset
+                    </button>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="user">Welcome, userxxx</div>
+
+                <!-- 🔥 FIX DI SINI -->
+                <div class="score">Score : <span id="score">0</span></div>
+            </div>
+
+        </div>
+
+<!-- Tambahkan elemen video di dalam game-area -->
+<div class="game-area">
+    <video id="webcam" autoplay playsinline style="width:100%; max-width:400px; border:1px solid #ccc;"></video>
+</div>
+
+<script>
+async function startWebcam() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const videoElement = document.getElementById("webcam");
+        if (videoElement) {
+            videoElement.srcObject = stream;
+        }
+    } catch (err) {
+        console.error("Tidak bisa akses webcam:", err);
+        const gameArea = document.querySelector(".game-area");
+        if (gameArea) {
+            gameArea.innerHTML = "<p>Webcam tidak bisa diakses. Pastikan izin kamera diaktifkan.</p>";
+        }
+    }
+}
+
+// Jalankan saat halaman dimuat
+window.onload = () => {
+    console.log("Connected to server...");
+    socket.emit("start_barrel");
+    startWebcam(); // 🔥 aktifkan webcam
+};
+</script>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <ul>
+                <li>Hold or view the barrel card at eye level.</li>
+                <li>Gradually shift your focus to the medium and smallest barrels.</li>
+                <li>Practice for 3-5 minutes daily for best results.</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+<script>
+const socket = io("http://localhost:5000");
+
+// 🚀 AUTO START GAME
+window.onload = () => {
+    console.log("Connected to server...");
+    socket.emit("start_barrel");
+};
+
+// 🔥 REALTIME SCORE UPDATE
+socket.on("score_update", (data) => {
+    if (data.game === "barrel") {
+        console.log("Score update:", data.score);
+
+        const scoreElement = document.getElementById("score");
+        if (scoreElement) {
+            scoreElement.innerText = data.score;
+        }
+
+        // Update isi game-area
+        const gameArea = document.querySelector(".game-area");
+        if (gameArea) {
+            gameArea.innerHTML = `<p>Current Score: ${data.score}</p>`;
+        }
+    }
+});
+
+// 🏁 GAME SELESAI
+socket.on("game_over", (data) => {
+    if (data.game === "barrel") {
+        console.log("Game Over:", data.score);
+
+        // Tampilkan hasil akhir di game-area
+        const gameArea = document.querySelector(".game-area");
+        if (gameArea) {
+            gameArea.innerHTML = `<h3>Game Over! Final Score: ${data.score}</h3>`;
+        }
+
+        // Jika mau redirect ke halaman hasil
+        // window.location.href = "result_barrel_cards.html?score=" + data.score;
+    }
+});
+</script>
+
+</body>
+</html>

@@ -11,7 +11,7 @@
 <div class="wrapper">
 
     <!-- BACK -->
-    <div class="back">
+    <div class="back" onclick="goBack()">
         <img src="icon/Icon_Back.png" class="back-icon">
         Back to Games
     </div>
@@ -25,7 +25,10 @@
 
         <div class="game-text">
             <h3>Barrel Cards</h3>
-            <p>Focus on barrel shapes to improve eye convergence, divergence, and binocular coordination.</p>
+            <p>
+              Focus on barrel shapes to improve eye convergence, divergence,
+              and binocular coordination.
+            </p>
         </div>
 
     </div>
@@ -46,16 +49,16 @@
             </div>
         </div>
 
-        <!-- Score -->
+        <!-- Score (🔥 DINAMIS) -->
         <div class="card stat-box center">
             <h4>Score</h4>
-            <div class="big">21</div>
+            <div class="big" id="finalScore">0</div>
         </div>
 
         <!-- Time -->
         <div class="card stat-box center">
             <h4>Time</h4>
-            <div class="big">0:50</div>
+            <div class="big" id="time">0:00</div>
         </div>
 
     </div>
@@ -64,16 +67,53 @@
     <div class="card result-box">
 
         <h2>Game Completed!</h2>
-        <p class="subtitle">Congratulations!<br>You have completed Barrel Cards.</p>
+        <p class="subtitle">
+            Congratulations!<br>
+            You have completed Barrel Cards.
+        </p>
 
         <div class="actions">
-            <button class="btn primary">Next Level</button>
-            <button class="btn outline">Restart</button>
+            <button class="btn primary" onclick="nextLevel()">Next Level</button>
+            <button class="btn outline" onclick="restartGame()">Restart</button>
         </div>
 
     </div>
 
 </div>
+
+<!-- ========================= -->
+<!-- 🔥 SCRIPT UTAMA -->
+<!-- ========================= -->
+<script>
+
+// ambil score dari URL
+const params = new URLSearchParams(window.location.search);
+const score = params.get("score");
+
+// tampilkan score
+if (score) {
+    document.getElementById("finalScore").innerText = score;
+}
+
+// (optional) dummy time
+document.getElementById("time").innerText = "0:45";
+
+// tombol back
+function goBack() {
+    window.location.href = "games.html";
+}
+
+// tombol restart
+function restartGame() {
+    window.location.href = "start_game_barrel_cards.html";
+}
+
+// tombol next level (sementara)
+function nextLevel() {
+    alert("Next level coming soon 🚀");
+}
+
+</script>
 
 </body>
 </html>
