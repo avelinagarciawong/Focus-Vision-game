@@ -12,17 +12,28 @@ body{
 }
 
 /* BACK */
-.back{
-    display:flex;
-    align-items:center;
-    font-size:18px;
-    margin-bottom:25px;
-    cursor:pointer;
+.back {
+  margin: 10px;
 }
 
-.back-icon{
-    width:18px;
-    margin-right:10px;
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.back-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Hover effect */
+.back-link:hover {
+  text-decoration: underline;
+  transform: translateX(-3px);
+  transition: 0.2s;
 }
 
 /* CARD */
@@ -132,22 +143,23 @@ body{
     gap:15px;
 }
 
-.btn{
-    padding:10px 25px;
-    border-radius:10px;
-    border:none;
-    cursor:pointer;
-    font-size:14px;
+.btn {
+  display: inline-block;
+  padding: 10px 25px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
 }
 
-.primary{
-    background:#a8c4e6;
-    color:#fff;
+.primary {
+  background: #a8c4e6;
+  color: white;
 }
 
-.outline{
-    border:1px solid #b8c7dc;
-    background:#fff;
+.outline {
+  border: 2px solid #b8c7dc;
+  background: white;
 }
 
 .primary:hover{
