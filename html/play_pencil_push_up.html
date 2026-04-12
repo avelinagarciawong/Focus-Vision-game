@@ -15,41 +15,58 @@
     .game-area {
         background-color: #b9c9d8;
         overflow: hidden;
+        position: relative;
     }
+    #start-overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0,0.5);
+        z-index: 10;
+        border-radius: 12px;
+    }
+    #start-btn {
+        padding: 16px 48px;
+        font-size: 22px;
+        font-weight: bold;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+    }
+    #start-btn:hover { background: #45a049; }
 </style>
 </head>
 
 <body>
 
 <div class="wrapper">
-
     <div class="card">
-
-        <!-- Header -->
         <div class="top-section">
-
             <div class="left">
                 <h2>Pencil Push Up</h2>
-
                 <div class="buttons">
                     <button class="btn"><img src="icon/Pause.png" class="pause-icon" alt="pause"> Pause</button>
                     <button class="btn"><img src="icon/Reset.png" class="reset-icon" alt="reset"> Reset</button>
                 </div>
             </div>
-
             <div class="right">
                 <div class="user">Welcome, userxxx</div>
                 <div class="score">Score : 0</div>
             </div>
-
         </div>
 
         <!-- Game Area -->
         <div class="game-area">
+            <div id="start-overlay">
+                <button id="start-btn">&#9654; Start Game</button>
+            </div>
             <img id="webcam-feed" alt="Webcam Feed">
         </div>
 
-        <!-- Instructions -->
         <div class="instructions">
             <ul>
                 <li>Follow the red circles with your eyes only.</li>
@@ -57,9 +74,7 @@
                 <li>Practice for 3-5 minutes daily for best results.</li>
             </ul>
         </div>
-
     </div>
-
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
@@ -79,8 +94,8 @@
         }
     });
 
-    socket.on("connect", function() {
-        console.log("SocketIO connected");
+    document.getElementById("start-btn").addEventListener("click", function() {
+        document.getElementById("start-overlay").style.display = "none";
         gameStarted = true;
         document.querySelector(".score").textContent = "Score : 0";
         socket.emit("start_pencil");

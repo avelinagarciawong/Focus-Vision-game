@@ -2,15 +2,30 @@ import cv2
 import time
 import random
 import threading
+import os
+
+MEDIAPIPE_AVAILABLE = False
+landmarker = None
 
 try:
     import mediapipe as mp
-    mp_face = mp.solutions.face_mesh
-    MEDIAPIPE_AVAILABLE = True
-    print("[Pencil] MediaPipe loaded OK")
-except (ImportError, AttributeError) as e:
-    MEDIAPIPE_AVAILABLE = False
-    print(f"[Pencil] MediaPipe tidak tersedia ({e}), jalan tanpa gaze detection")
+    from mediapipe.tasks.python import vision, BaseOptions
+
+    model_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "face_landmarker.task")
+    if os.path.exists(model_path):
+        options = vision.FaceLandmarkerOptions(
+            base_options=BaseOptions(model_asset_path=model_path),
+            output_face_blendshapes=False,
+            output_facial_transformation_matrixes=False,
+            num_faces=1
+        )
+        landmarker = vision.FaceLandmarker.create_from_options(options)
+        MEDIAPIPE_AVAILABLE = True
+        print("[Pencil] FaceLandmarker loaded OK")
+    else:
+        print(f"[Pencil] Model not found: {model_path}")
+except Exception as e:
+    print(f"[Pencil] MediaPipe error: {e}")
 
 
 def start_game(socketio, frame_holder):
@@ -24,11 +39,28 @@ def start_game(socketio, frame_holder):
         frame_holder["running"] = False
         return 0
 
-    print(f"[Pencil] Webcam OK: {int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))}x{int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))}")
+    w_cam = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    h_cam = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    print(f"[Pencil] Webcam OK: {w_cam}x{h_cam}")
 
-    face_mesh = None
-    if MEDIAPIPE_AVAILABLE:
-        face_mesh = mp_face.FaceMesh(refine_landmarks=True)
+    # Countdown 3, 2, 1
+    for count in [3, 2, 1]:
+        ret, frame = cap.read()
+        if ret:
+            frame = cv2.flip(frame, 1)
+            h, w, _ = frame.shape
+            text = str(count)
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            scale = 4
+            thickness = 8
+            (tw, th), _ = cv2.getTextSize(text, font, scale, thickness)
+            cx = (w - tw) // 2
+            cy = (h + th) // 2
+            cv2.putText(frame, text, (cx, cy), font, scale, (0, 255, 255), thickness)
+            _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
+            with frame_holder["lock"]:
+                frame_holder["frame"] = buffer.tobytes()
+        time.sleep(1)
 
     depth = 40
     min_depth = 40
@@ -37,7 +69,6 @@ def start_game(socketio, frame_holder):
     direction = 1
 
     score = 0
-
     FOCUS_MIN = 0.42
     FOCUS_MAX = 0.58
 
@@ -56,15 +87,15 @@ def start_game(socketio, frame_holder):
 
         focused = False
 
-        if face_mesh is not None:
+        if MEDIAPIPE_AVAILABLE and landmarker is not None:
             rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            result = face_mesh.process(rgb)
+            mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
+            result = landmarker.detect(mp_image)
 
-            if result.multi_face_landmarks:
-                lm = result.multi_face_landmarks[0].landmark
-                pos_l = (lm[468].x - lm[33].x) / (lm[133].x - lm[33].x)
-                pos_r = (lm[473].x - lm[362].x) / (lm[263].x - lm[362].x)
-
+            if result.face_landmarks:
+                lm = result.face_landmarks[0]
+                pos_l = (lm[468].x - lm[33].x) / (lm[133].x - lm[33].x + 1e-6)
+                pos_r = (lm[473].x - lm[362].x) / (lm[263].x - lm[362].x + 1e-6)
                 if FOCUS_MIN < pos_l < FOCUS_MAX and FOCUS_MIN < pos_r < FOCUS_MAX:
                     focused = True
 
@@ -78,17 +109,9 @@ def start_game(socketio, frame_holder):
         elif depth <= min_depth:
             direction = 1
 
-        cv2.putText(frame, f"Score: {score}", (30, 40),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-
-        # Draw pencil indicator
         pencil_x = w // 2
         pencil_y = h // 2
         cv2.circle(frame, (pencil_x, pencil_y), depth // 2, (0, 0, 255), 2)
-
-        if not MEDIAPIPE_AVAILABLE:
-            cv2.putText(frame, "MediaPipe not available - gaze detection OFF", (30, 80),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 1)
 
         _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
         with frame_holder["lock"]:
