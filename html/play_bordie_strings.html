@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <title>Brodie String</title>
 <link rel="stylesheet" href="css/playgame.css">
+<style>
+    #webcam-feed {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        border-radius: 12px;
+    }
+    .game-area {
+        background-color: #b9c9d8;
+        overflow: hidden;
+    }
+</style>
 </head>
 
 <body>
@@ -32,7 +45,9 @@
         </div>
 
         <!-- Game Area -->
-        <a href="result_brodie_strings.html" class="game-area"></a>
+        <div class="game-area">
+            <img id="webcam-feed" alt="Webcam Feed">
+        </div>
 
         <!-- Instructions -->
         <div class="instructions">
@@ -46,6 +61,33 @@
     </div>
 
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+<script>
+    const socket = io();
+    let gameStarted = false;
+
+    socket.on("score_update", function(data) {
+        document.querySelector(".score").textContent = "Score : " + data.score;
+    });
+
+    socket.on("game_over", function(data) {
+        if (gameStarted) {
+            window.location.href = "result_brodie_strings.html?score=" + data.score;
+        }
+    });
+
+    socket.on("connect", function() {
+        console.log("SocketIO connected");
+        gameStarted = true;
+        document.querySelector(".score").textContent = "Score : 0";
+        socket.emit("start_brodie");
+        // Set stream src setelah emit supaya server sudah running
+        setTimeout(function() {
+            document.getElementById("webcam-feed").src = "/video_feed/brodie?" + Date.now();
+        }, 300);
+    });
+</script>
 
 </body>
 </html>

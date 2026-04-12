@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <title>Pencil Push Up</title>
 <link rel="stylesheet" href="css/playgame.css">
+<style>
+    #webcam-feed {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+        border-radius: 12px;
+    }
+    .game-area {
+        background-color: #b9c9d8;
+        overflow: hidden;
+    }
+</style>
 </head>
 
 <body>
@@ -26,13 +39,15 @@
 
             <div class="right">
                 <div class="user">Welcome, userxxx</div>
-                <div class="score">Score : 5</div>
+                <div class="score">Score : 0</div>
             </div>
 
         </div>
 
         <!-- Game Area -->
-        <a href="result_pencil_push_up.html" class="game-area"></a>
+        <div class="game-area">
+            <img id="webcam-feed" alt="Webcam Feed">
+        </div>
 
         <!-- Instructions -->
         <div class="instructions">
@@ -46,6 +61,34 @@
     </div>
 
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
+<script>
+    const socket = io();
+    let gameStarted = false;
+
+    socket.on("score_update", function(data) {
+        if (data.game === "pencil") {
+            document.querySelector(".score").textContent = "Score : " + data.score;
+        }
+    });
+
+    socket.on("game_over", function(data) {
+        if (gameStarted && data.game === "pencil") {
+            window.location.href = "result_pencil_push_up.html?score=" + data.score;
+        }
+    });
+
+    socket.on("connect", function() {
+        console.log("SocketIO connected");
+        gameStarted = true;
+        document.querySelector(".score").textContent = "Score : 0";
+        socket.emit("start_pencil");
+        setTimeout(function() {
+            document.getElementById("webcam-feed").src = "/video_feed/pencil?" + Date.now();
+        }, 300);
+    });
+</script>
 
 </body>
 </html>
