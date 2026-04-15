@@ -1,5 +1,8 @@
-from flask import Flask, Response, send_from_directory
+from flask import Flask, Response, send_from_directory, request, redirect, session, render_template
+import mysql.connector
+from werkzeug.security import check_password_hash
 from flask_socketio import SocketIO
+from functools import wraps
 import threading
 import time
 
@@ -8,21 +11,106 @@ import brodie_string_game
 import pencil_pushup
 
 app = Flask(__name__, static_folder="html", static_url_path="")
+app.secret_key = "secret123"
 socketio = SocketIO(app, cors_allowed_origins="*")
 
+def get_db():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="",
+        database="focus_point"
+    )
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user" not in session:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
 
 # =========================
 # PAGES
 # =========================
 
+@app.route("/login")
+def login_page():
+    return send_from_directory("html", "login.html")
+
+@app.route("/register")
+def register_page():
+    return send_from_directory("html", "register.html")
+
 @app.route("/")
 def index():
-    return send_from_directory("html", "home2.html")
+    if "user" in session:
+        return send_from_directory("html", "home2.html")
+    else:
+        return redirect("/login")
 
 
 @app.route("/html/<path:filename>")
+@login_required
 def serve_html(filename):
     return send_from_directory("html", filename)
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect("/login")
+
+# =========================
+# PROSES LOGIN
+# =========================
+
+@app.route("/login", methods=["POST"])
+def login():
+    email = request.form["email"]
+    password = request.form["password"]
+
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
+    user = cursor.fetchone()
+
+    if user:
+        if check_password_hash(user["password"], password):
+            session["user"] = user["username"]
+            return redirect("/")  # ke home2.html
+        else:
+            return "Password salah!"
+    else:
+        return "Email tidak ditemukan!"
+
+@app.route("/session")
+def get_session():
+    return {"user": session.get("user")}
+
+# =========================
+# PROSES REGISTER
+# =========================
+
+from werkzeug.security import generate_password_hash
+
+@app.route("/register", methods=["POST"])
+def register():
+    username = request.form["username"]
+    email = request.form["email"]
+    password = generate_password_hash(request.form["password"])
+
+    db = get_db()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "INSERT INTO users (username, email, password) VALUES (%s, %s, %s)",
+        (username, email, password),
+    )
+
+    db.commit()
+
+    return redirect("/login")
 
 # =========================
 # BRODIE FRAME HOLDER

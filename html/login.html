@@ -1,47 +1,11 @@
-<?php
-session_start();
-
-$conn = new mysqli("localhost", "root", "", "focus_point");
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-
-$error = "";
-
-// proses register
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-    $check = $conn->query("SELECT * FROM users WHERE email='$email'");
-
-    if ($check->num_rows > 0) {
-        echo "Email sudah terdaftar!";
-    } else {
-        if ($conn->query("INSERT INTO users (username, email, password)
-                  VALUES ('$username', '$email', '$password')")) {
-            header("Location: login.php");
-            exit();
-        } else {
-            echo "ERROR: " . $conn->error;
-        }
-        exit();
-    }
-}
-?>
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Focus Point - Register</title>
+    <title>Focus Point - Login</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" />
-
     <!-- Font  -->
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"
@@ -49,10 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="css/register.css" />
+    <link rel="stylesheet" href="css/login.css" />
   </head>
   <body>
-    <!-- ✅ NAVBAR (SAMA PERSIS) -->
+    <!-- ✅ NAVBAR (SAMA DENGAN HOME) -->
     <div class="container-fluid sticky-top bg-white shadow-sm">
       <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light py-3">
@@ -68,9 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <span class="navbar-toggler-icon"></span>
           </button>
 
+          <!-- INI YANG PENTING -->
           <div class="collapse navbar-collapse" id="navbarNav">
             <div class="navbar-nav ms-auto">
-              <a href="home.php" class="nav-link">Home</a>
+              <a href="home.html" class="nav-link">Home</a>
               <a href="about.html" class="nav-link">About Us</a>
               <a href="#" class="nav-link">How to use</a>
             </div>
@@ -79,17 +44,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
 
-    <!-- ✅ REGISTER -->
+    <!-- ✅ LOGIN -->
     <section class="login-wrapper">
       <div class="login-card">
         <div class="login-content">
           <!-- LEFT -->
           <div class="left">
-            <h1>Create an account<br />to get started.</h1>
+            <h1>Sign In to<br />get your nutrients</h1>
 
             <p>
-              Already have an account?<br />
-              <a href="login.php" class="register-link">Log in here.</a>
+              If you don't have an account.<br />
+              You can
+              <a href="register.html" class="register-link">Register here !</a>
             </p>
 
             <div class="image-wrapper">
@@ -99,25 +65,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
           <!-- RIGHT -->
           <div class="right">
-            <!-- SWITCH (REGISTER AKTIF) -->
+            <!-- SWITCH BUTTON -->
             <div class="auth-switch mb-4">
-              <a href="login.php" class="auth-btn">Sign In</a>
-              <a href="register.php" class="auth-btn active">Register</a>
+              <a href="login.html" class="auth-btn active">Sign In</a>
+              <a href="register.html" class="auth-btn">Register</a>
             </div>
 
-            <h2 class="mb-4">Create Account</h2>
+            <h2 class="mb-4">Welcome Back</h2>
 
-            <!-- ERROR MESSAGE -->
-            <?php if ($error): ?>
-                <p style="color:red; margin-bottom:10px;"><?php echo $error; ?></p>
-            <?php endif; ?>
-
-            <form class="form" method="POST" action="register.php">
-              <div class="input-box">
-                <input type="text" name="username" placeholder="Enter Username" required />
-                <img src="icon/icon_x.png" />
-              </div>
-
+            <form class="form" method="POST" action="/login">
               <div class="input-box">
                 <input type="email" name="email" placeholder="Enter Email" required />
                 <img src="icon/icon_x.png" />
@@ -128,7 +84,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <img src="icon/icon_password.png" />
               </div>
 
-              <button type="submit" class="submit-btn">Register</button>
+              <p class="forgot-password">Recover Password ?</p>
+
+              <button class="submit-btn" type="submit">Sign In</button>
 
               <div class="divider">Or continue with</div>
             </form>
