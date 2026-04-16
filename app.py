@@ -1,6 +1,6 @@
 from flask import Flask, Response, send_from_directory, request, redirect, session, render_template
 import mysql.connector
-from werkzeug.security import check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_socketio import SocketIO
 from functools import wraps
 import threading
@@ -36,7 +36,18 @@ def login_required(f):
 
 @app.context_processor
 def inject_user():
-    return dict(username=session.get("user", "Guest"))
+    db = get_db()
+    cursor = db.cursor(dictionary=True, buffered=True)
+
+    email = session.get("user")
+
+    if email:
+        cursor.execute("SELECT username FROM users WHERE email=%s", (email,))
+        user = cursor.fetchone()
+        if user:
+            return dict(username=user["username"])
+
+    return dict(username="Guest")
 
 @app.route("/login")
 def login_page():
@@ -62,47 +73,33 @@ def dashboard():
 @login_required
 def profile():
     db = get_db()
-    cursor = db.cursor(dictionary=True)
+    cursor = db.cursor(dictionary=True, buffered=True)
 
-    old_username = session["user"]
+    email = session["user"]
 
     if request.method == "POST":
         new_username = request.form["username"].strip()
 
-        # 🔥 VALIDASI USERNAME
+        # cek username duplicate
         cursor.execute("SELECT * FROM users WHERE username=%s", (new_username,))
         existing = cursor.fetchone()
 
-        if existing and existing["username"] != old_username:
-            cursor.execute("SELECT * FROM users WHERE username=%s", (old_username,))
+        if existing and existing["email"] != email:
+            cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
             user = cursor.fetchone()
             return render_template("profile.html", user=user, error="Username sudah digunakan!")
 
-        try:
-            cursor.execute("""
-                UPDATE users 
-                SET username=%s
-                WHERE username=%s
-            """, (new_username, old_username))
+        cursor.execute("""
+            UPDATE users 
+            SET username=%s
+            WHERE email=%s
+        """, (new_username, email))
 
-            db.commit()
+        db.commit()
 
-            # update session
-            session["user"] = new_username
+        return redirect("/profile")
 
-            cursor.execute("SELECT * FROM users WHERE username=%s", (new_username,))
-            user = cursor.fetchone()
-
-            return render_template("profile.html", user=user, success="Username berhasil diupdate!")
-
-        except mysql.connector.Error as e:
-            print("MYSQL ERROR:", e)
-            cursor.execute("SELECT * FROM users WHERE username=%s", (old_username,))
-            user = cursor.fetchone()
-            return render_template("profile.html", user=user, error="Terjadi error saat update!")
-
-    # GET
-    cursor.execute("SELECT * FROM users WHERE username=%s", (old_username,))
+    cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
     user = cursor.fetchone()
 
     return render_template("profile.html", user=user)
@@ -122,9 +119,44 @@ def home2():
 def notification():
     return render_template("notification.html")
 
-@app.route("/privacy")
+@app.route("/privacy", methods=["GET", "POST"])
 @login_required
 def privacy():
+    db = get_db()
+    cursor = db.cursor(dictionary=True, buffered=True)
+
+    email = session["user"]
+
+    cursor.execute("SELECT * FROM users WHERE email=%s", (email,))
+    user = cursor.fetchone()
+
+    # 🔥 CEGAH ERROR
+    if not user:
+        return render_template("privacy.html", error="User tidak ditemukan, silakan login ulang")
+
+    if request.method == "POST":
+        current_password = request.form["current_password"]
+        new_password = request.form["new_password"]
+        confirm_password = request.form["confirm_password"]
+
+        if not check_password_hash(user["password"], current_password):
+            return render_template("privacy.html", error="Password lama salah!")
+
+        if new_password != confirm_password:
+            return render_template("privacy.html", error="Password tidak sama!")
+
+        hashed_password = generate_password_hash(new_password)
+
+        cursor.execute("""
+            UPDATE users 
+            SET password=%s
+            WHERE email=%s
+        """, (hashed_password, email))
+
+        db.commit()
+
+        return render_template("privacy.html", success="Password berhasil diubah!")
+
     return render_template("privacy.html")
 
 @app.route("/about")
@@ -154,7 +186,7 @@ def login():
 
     if user:
         if check_password_hash(user["password"], password):
-            session["user"] = user["username"]
+            session["user"] = user["email"]
             return redirect("/")  # ke home2.html
         else:
             return "Password salah!"

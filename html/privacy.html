@@ -85,27 +85,41 @@
           <h1>Change password</h1>
         </div>
 
-        <form class="privacy-form">
+        <form class="privacy-form" method="POST" action="/privacy">
+
+          {% if error %}
+          <p style="color:red; margin-bottom:10px;">{{ error }}</p>
+          {% endif %}
+
+          {% if success %}
+          <p style="color:green; margin-bottom:10px;">{{ success }}</p>
+          {% endif %}
+
           <div class="input-grid">
             <div class="input-stack">
+
               <div class="input-group full-width">
                 <label>Current password</label>
-                <input type="password" />
+                <input type="password" name="current_password" required />
               </div>
+
               <div class="input-group full-width">
                 <label>New password</label>
-                <input type="password" />
+                <input type="password" name="new_password" required />
               </div>
+
               <div class="input-group full-width">
                 <label>Re-type new password</label>
-                <input type="password" />
+                <input type="password" name="confirm_password" required />
               </div>
+
             </div>
           </div>
 
           <div class="form-action">
             <button type="submit" class="save-btn">Save Changes</button>
           </div>
+
         </form>
       </section>
     </main>
