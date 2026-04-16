@@ -10,7 +10,7 @@ import barrel_cards
 import brodie_string_game
 import pencil_pushup
 
-app = Flask(__name__, static_folder="html", static_url_path="")
+app = Flask(__name__, template_folder="html", static_folder="html", static_url_path="")
 app.secret_key = "secret123"
 socketio = SocketIO(app, cors_allowed_origins="*")
 
@@ -34,26 +34,59 @@ def login_required(f):
 # PAGES
 # =========================
 
+@app.context_processor
+def inject_user():
+    return dict(username=session.get("user"))
+
 @app.route("/login")
 def login_page():
-    return send_from_directory("html", "login.html")
+    return render_template("login.html")
 
 @app.route("/register")
 def register_page():
-    return send_from_directory("html", "register.html")
+    return render_template("register.html")
 
 @app.route("/")
 def index():
     if "user" in session:
-        return send_from_directory("html", "home2.html")
+        return render_template("home2.html")
     else:
         return redirect("/login")
 
-
-@app.route("/html/<path:filename>")
+@app.route("/dashboard")
 @login_required
-def serve_html(filename):
-    return send_from_directory("html", filename)
+def dashboard():
+    return render_template("dashboard.html")
+
+@app.route("/profile")
+@login_required
+def profile():
+    return render_template("profile.html")
+
+@app.route("/games2")
+@login_required
+def games2():
+    return render_template("games2.html")
+
+@app.route("/home2")
+@login_required
+def home2():
+    return render_template("home2.html")
+
+@app.route("/notification")
+@login_required
+def notification():
+    return render_template("notification.html")
+
+@app.route("/privacy")
+@login_required
+def privacy():
+    return render_template("privacy.html")
+
+@app.route("/about")
+@login_required
+def about():
+    return render_template("about.html")
 
 @app.route("/logout")
 def logout():
