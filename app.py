@@ -36,7 +36,7 @@ def login_required(f):
 
 @app.context_processor
 def inject_user():
-    return dict(username=session.get("user"))
+    return dict(username=session.get("user", "Guest"))
 
 @app.route("/login")
 def login_page():
@@ -58,10 +58,54 @@ def index():
 def dashboard():
     return render_template("dashboard.html")
 
-@app.route("/profile")
+@app.route("/profile", methods=["GET", "POST"])
 @login_required
 def profile():
-    return render_template("profile.html")
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    old_username = session["user"]
+
+    if request.method == "POST":
+        new_username = request.form["username"].strip()
+
+        # 🔥 VALIDASI USERNAME
+        cursor.execute("SELECT * FROM users WHERE username=%s", (new_username,))
+        existing = cursor.fetchone()
+
+        if existing and existing["username"] != old_username:
+            cursor.execute("SELECT * FROM users WHERE username=%s", (old_username,))
+            user = cursor.fetchone()
+            return render_template("profile.html", user=user, error="Username sudah digunakan!")
+
+        try:
+            cursor.execute("""
+                UPDATE users 
+                SET username=%s
+                WHERE username=%s
+            """, (new_username, old_username))
+
+            db.commit()
+
+            # update session
+            session["user"] = new_username
+
+            cursor.execute("SELECT * FROM users WHERE username=%s", (new_username,))
+            user = cursor.fetchone()
+
+            return render_template("profile.html", user=user, success="Username berhasil diupdate!")
+
+        except mysql.connector.Error as e:
+            print("MYSQL ERROR:", e)
+            cursor.execute("SELECT * FROM users WHERE username=%s", (old_username,))
+            user = cursor.fetchone()
+            return render_template("profile.html", user=user, error="Terjadi error saat update!")
+
+    # GET
+    cursor.execute("SELECT * FROM users WHERE username=%s", (old_username,))
+    user = cursor.fetchone()
+
+    return render_template("profile.html", user=user)
 
 @app.route("/games2")
 @login_required

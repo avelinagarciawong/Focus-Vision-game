@@ -96,29 +96,34 @@
           </div>
         </div>
 
-        <form class="profile-form">
+        <form class="profile-form" method="POST" action="/profile">
+
+          {% if error %}
+          <p style="color:red; margin-bottom:10px;">{{ error }}</p>
+          {% endif %}
+
+          {% if success %}
+          <p style="color:green; margin-bottom:10px;">{{ success }}</p>
+          {% endif %}
+
           <div class="input-grid">
+            
             <div class="input-group">
-              <label>First name</label>
-              <input type="text" />
+              <label>Username</label>
+              <input type="text" name="username" value="{{ user.username }}" />
             </div>
-            <div class="input-group">
-              <label>Last name</label>
-              <input type="text" />
-            </div>
+
             <div class="input-group">
               <label>Email</label>
-              <input type="email" />
+              <input type="email" value="{{ user.email }}" readonly />
             </div>
-            <div class="input-group">
-              <label>Phone Number</label>
-              <input type="text" />
-            </div>
+
           </div>
 
           <div class="form-action">
             <button type="submit" class="save-btn">Save Changes</button>
           </div>
+
         </form>
       </section>
     </main>
