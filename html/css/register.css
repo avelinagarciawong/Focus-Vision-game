@@ -174,7 +174,9 @@ body {
 /* SOCIAL */
 .social-login {
   display: flex;
-  gap: 20px;
+  justify-content: space-between; 
+  align-items: center;
+  width: 350px;
 }
 
 .social-login button {

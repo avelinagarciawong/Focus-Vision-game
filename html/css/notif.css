@@ -43,6 +43,18 @@ body {
     width: 45px;
 }
 
+.logout-icon {
+  width: 35px;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-left: 10px;
+}
+
+.logout-icon:hover {
+  transform: scale(1.1);
+  opacity: 0.7;
+}
+
 /* --- LAYOUT UTAMA --- */
 .content-wrapper {
     display: flex;
