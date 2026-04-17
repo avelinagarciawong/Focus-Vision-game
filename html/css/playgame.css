@@ -89,6 +89,28 @@ body{
     margin-top:16px;
 }
 
+.countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  font-weight: bold;
+  color: white;
+  display: none;
+}
+
+.timer {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
 /* Instructions */
 .instructions{
     margin-top:20px;

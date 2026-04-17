@@ -54,7 +54,7 @@
                 </div>
             </div>
             <div class="right">
-                <div class="user">Welcome, userxxx</div>
+                <div class="user">Welcome, {{ username }}</div>
                 <div class="score">Score : 0</div>
             </div>
         </div>
@@ -64,6 +64,7 @@
             <div id="start-overlay">
                 <button id="start-btn">&#9654; Start Game</button>
             </div>
+            <div class="timer" id="timer">Time: 30</div>
             <img id="webcam-feed" alt="Webcam Feed">
         </div>
 
@@ -81,26 +82,57 @@
 <script>
     const socket = io();
     let gameStarted = false;
+    let timeLeft = 30;
+    let timerInterval = null;
+    let currentScore = 0;
 
     socket.on("score_update", function(data) {
-        document.querySelector(".score").textContent = "Score : " + data.score;
+        if (data.game === "brodie") {
+            currentScore = data.score;
+            document.querySelector(".score").textContent = "Score : " + currentScore;
+        }
     });
 
     socket.on("game_over", function(data) {
-        if (gameStarted) {
+        if (gameStarted && data.game === "brodie") {
             window.location.href = "result_brodie_strings.html?score=" + data.score;
         }
     });
 
     document.getElementById("start-btn").addEventListener("click", function() {
         document.getElementById("start-overlay").style.display = "none";
+
         gameStarted = true;
+        timeLeft = 30;
+        currentScore = 0;
+
         document.querySelector(".score").textContent = "Score : 0";
+        document.getElementById("timer").textContent = "Time: 30";
+
         socket.emit("start_brodie");
+
         setTimeout(function() {
             document.getElementById("webcam-feed").src = "/video_feed/brodie?" + Date.now();
         }, 300);
+
+        startTimer(); // 🔥 mulai timer
     });
+
+    function startTimer() {
+        const timerElement = document.getElementById("timer");
+
+        timerInterval = setInterval(function() {
+            timeLeft--;
+            timerElement.textContent = "Time: " + timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+
+                window.location.href = "result_brodie_strings.html?score=" + currentScore;
+            }
+
+        }, 1000);
+    }
 </script>
 
 </body>

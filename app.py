@@ -164,6 +164,51 @@ def privacy():
 def about():
     return render_template("about.html")
 
+@app.route("/play_pencil_push_up")
+@login_required
+def play_pencil_push_up():
+    return render_template("play_pencil_push_up.html")
+
+@app.route("/start_game_pencil_push_up")
+@login_required
+def start_game_pencil_push_up():
+    return render_template("start_game_pencil_push_up.html")
+
+@app.route("/result_pencil_push_up")
+@login_required
+def result_pencil_push_up():
+    return render_template("result_pencil_push_up.html")
+
+@app.route("/play_bordie_strings")
+@login_required
+def play_bordie_strings():
+    return render_template("play_bordie_strings.html")
+
+@app.route("/start_game_bordie_strings")
+@login_required
+def start_game_bordie_strings():
+    return render_template("start_game_bordie_strings.html")
+
+@app.route("/result_bordie_strings")
+@login_required
+def result_bordie_strings():
+    return render_template("result_bordie_strings.html")
+
+@app.route("/play_barrel_cards")
+@login_required
+def play_barrel_cards():
+    return render_template("play_barrel_cards.html")
+
+@app.route("/start_game_barrel_cards")
+@login_required
+def start_game_barrel_cards():
+    return render_template("start_game_barrel_cards.html")
+
+@app.route("/result_barrel_cards")
+@login_required
+def result_barrel_cards():
+    return render_template("result_barrel_cards.html")
+
 @app.route("/logout")
 def logout():
     session.pop("user", None)
@@ -200,8 +245,6 @@ def get_session():
 # =========================
 # PROSES REGISTER
 # =========================
-
-from werkzeug.security import generate_password_hash
 
 @app.route("/register", methods=["POST"])
 def register():
