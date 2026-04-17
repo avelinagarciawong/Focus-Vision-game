@@ -49,8 +49,13 @@
             <div class="left">
                 <h2>Brodie String</h2>
                 <div class="buttons">
-                    <button class="btn"><img src="icon/Pause.png" class="pause-icon" alt="pause"> Pause</button>
-                    <button class="btn"><img src="icon/Reset.png" class="reset-icon" alt="reset"> Reset</button>
+                    <button id="pause-btn" class="btn">
+                        <img src="icon/Pause.png" class="pause-icon"> Pause
+                    </button>
+
+                    <button id="reset-btn" class="btn">
+                        <img src="icon/Reset.png" class="reset-icon"> Reset
+                    </button>
                 </div>
             </div>
             <div class="right">
@@ -81,13 +86,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
 <script>
     const socket = io();
+
     let gameStarted = false;
+    let isPaused = false;
     let timeLeft = 30;
     let timerInterval = null;
     let currentScore = 0;
 
+    // ======================
+    // SCORE UPDATE
+    // ======================
     socket.on("score_update", function(data) {
-        if (data.game === "brodie") {
+        if (!isPaused && data.game === "brodie") {
             currentScore = data.score;
             document.querySelector(".score").textContent = "Score : " + currentScore;
         }
@@ -99,10 +109,14 @@
         }
     });
 
+    // ======================
+    // START GAME
+    // ======================
     document.getElementById("start-btn").addEventListener("click", function() {
         document.getElementById("start-overlay").style.display = "none";
 
         gameStarted = true;
+        isPaused = false;
         timeLeft = 30;
         currentScore = 0;
 
@@ -115,24 +129,70 @@
             document.getElementById("webcam-feed").src = "/video_feed/brodie?" + Date.now();
         }, 300);
 
-        startTimer(); // 🔥 mulai timer
+        startTimer();
     });
 
+    // ======================
+    // TIMER
+    // ======================
     function startTimer() {
         const timerElement = document.getElementById("timer");
 
         timerInterval = setInterval(function() {
-            timeLeft--;
-            timerElement.textContent = "Time: " + timeLeft;
+            if (!isPaused) {
+                timeLeft--;
+                timerElement.textContent = "Time: " + timeLeft;
 
-            if (timeLeft <= 0) {
-                clearInterval(timerInterval);
-
-                window.location.href = "result_brodie_strings.html?score=" + currentScore;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    window.location.href = "result_brodie_strings.html?score=" + currentScore;
+                }
             }
-
         }, 1000);
     }
+
+    // ======================
+    // PAUSE BUTTON
+    // ======================
+    document.getElementById("pause-btn").addEventListener("click", function() {
+        if (!gameStarted) return;
+
+        isPaused = !isPaused;
+
+        if (isPaused) {
+            this.innerHTML = '<img src="icon/icon_play.png" class="pause-icon"> Resume';
+        } else {
+            this.innerHTML = '<img src="icon/Pause.png" class="pause-icon"> Pause';
+        }
+    });
+
+    // ======================
+    // RESET BUTTON
+    // ======================
+    document.getElementById("reset-btn").addEventListener("click", function() {
+        // stop timer
+        clearInterval(timerInterval);
+
+        // reset state
+        gameStarted = false;
+        isPaused = false;
+        timeLeft = 30;
+        currentScore = 0;
+
+        // reset UI
+        document.querySelector(".score").textContent = "Score : 0";
+        document.getElementById("timer").textContent = "Time: 30";
+
+        // stop webcam
+        document.getElementById("webcam-feed").src = "";
+
+        // tampilkan overlay lagi
+        document.getElementById("start-overlay").style.display = "flex";
+
+        // reset tombol pause
+        document.getElementById("pause-btn").innerHTML =
+            '<img src="icon/Pause.png" class="pause-icon"> Pause';
+    });
 </script>
 
 </body>
