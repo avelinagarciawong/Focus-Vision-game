@@ -69,8 +69,8 @@
         <p class="subtitle">Congratulations!<br>You have completed Brodie Strings.</p>
 
         <div class="actions">
-            <button class="btn primary">Next Level</button>
-            <button class="btn outline">Restart</button>
+          <button id="next-btn" class="btn primary">Next Level</button>
+          <button id="restart-btn" class="btn outline">Restart</button>
         </div>
 
     </div>
@@ -94,6 +94,17 @@
     let seconds = time % 60;
     document.getElementById("time-value").textContent =
         minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    
+    const restartBtn = document.querySelector(".btn.outline");
+      const nextBtn = document.querySelector(".btn.primary");
+
+      function restartGame() {
+          // arahkan ke halaman start game
+          window.location.href = "/start_game_bordie_strings";
+      }
+
+    document.getElementById("restart-btn").addEventListener("click", restartGame);
+    document.getElementById("next-btn").addEventListener("click", restartGame);
 </script>
 
 </body>

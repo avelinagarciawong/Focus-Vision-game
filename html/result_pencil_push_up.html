@@ -67,29 +67,43 @@
         </p>
 
         <div class="actions">
-          <button class="btn primary">Next Level</button>
-          <button class="btn outline">Restart</button>
+          <button id="next-btn" class="btn primary">Next Level</button>
+          <button id="restart-btn" class="btn outline">Restart</button>
         </div>
       </div>
     </div>
 
-    <script>
-        // ambil parameter dari URL
-        const params = new URLSearchParams(window.location.search);
+  <script>
+      // ambil parameter dari URL
+      const params = new URLSearchParams(window.location.search);
 
-        const score = params.get("score") || 0;
-        const time = 30;
+      const score = params.get("score") || 0;
+      const time = 30;
 
-        // tampilkan score
-        document.getElementById("score").textContent = score;
+      document.getElementById("score").textContent = score;
 
-        // format waktu (detik)
-        const minutes = Math.floor(time / 60);
-        const seconds = time % 60;
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
 
-        document.getElementById("time").textContent =
-            minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
-    </script>
+      document.getElementById("time").textContent =
+          minutes + ":" + (seconds < 10 ? "0" + seconds : seconds);
+
+
+      // ======================
+      // BUTTON ACTIONS
+      // ======================
+
+      const restartBtn = document.querySelector(".btn.outline");
+      const nextBtn = document.querySelector(".btn.primary");
+
+      function restartGame() {
+          // arahkan ke halaman start game
+          window.location.href = "/start_game_pencil_push_up";
+      }
+
+    document.getElementById("restart-btn").addEventListener("click", restartGame);
+    document.getElementById("next-btn").addEventListener("click", restartGame);
+  </script>
 
   </body>
 </html>

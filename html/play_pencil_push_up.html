@@ -122,6 +122,8 @@ document.getElementById("start-btn").addEventListener("click", function() {
 });
 
 function startGame() {
+    if (gameStarted) return;
+    
     socket.emit("reset_pencil"); // 🔥 paksa reset dulu
 
     timeLeft = 30;
@@ -138,11 +140,8 @@ function startGame() {
 
     const webcam = document.getElementById("webcam-feed");
 
-    webcam.onload = function() {
-        startTimer();
-    };
-
     webcam.src = "/video_feed/pencil?" + Date.now();
+    startTimer(); // langsung panggil
 }
 
 // ======================

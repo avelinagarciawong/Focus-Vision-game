@@ -218,14 +218,29 @@ def handle_pause(data):
     pencil_state["paused"] = data.get("paused", False)
 
 @socketio.on("reset_pencil")
-def handle_reset():
+def handle_reset_pencil():
     pencil_state["reset"] = True
     pencil_frame_holder["running"] = False
     time.sleep(0.2)
 
+    # 🔥 tambah ini
+    pencil_state["paused"] = False
+    pencil_state["reset"] = False
+
 @app.route("/start_game_pencil_push_up")
 @login_required
 def start_game_pencil_push_up():
+
+    from game_state import pencil_state
+
+    pencil_state["paused"] = False
+    pencil_state["reset"] = False
+
+    with pencil_frame_holder["lock"]:
+        pencil_frame_holder["frame"] = None
+
+    pencil_frame_holder["running"] = False
+
     return render_template("start_game_pencil_push_up.html")
 
 @app.route("/result_pencil_push_up")
@@ -369,7 +384,7 @@ def generate_pencil_frames():
         if pencil_frame_holder["running"]:
             break
         time.sleep(0.05)
-    while pencil_frame_holder["running"] or pencil_frame_holder["frame"] is not None:
+    while pencil_frame_holder["running"]:
         with pencil_frame_holder["lock"]:
             frame = pencil_frame_holder["frame"]
         if frame is not None:
@@ -478,6 +493,12 @@ def run_pencil(email):
 
     finally:
         pencil_frame_holder["running"] = False
+        pencil_state["paused"] = False
+        pencil_state["reset"] = False
+
+        # 🔥 INI PENTING BANGET
+        with pencil_frame_holder["lock"]:
+            pencil_frame_holder["frame"] = None
 
         if cursor:
             cursor.close()
