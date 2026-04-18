@@ -19,7 +19,7 @@ def get_db():
         host="localhost",
         user="root",
         password="",
-        database="focus_point"
+        database="web_focus_point"
     )
 
 def login_required(f):
@@ -67,7 +67,25 @@ def index():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template("dashboard.html")
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("SELECT user_id FROM users WHERE email=%s", (session["user"],))
+    user = cursor.fetchone()
+
+    cursor.execute("""
+        SELECT game_name, MAX(score) as best_score
+        FROM game_scores
+        WHERE user_id=%s
+        GROUP BY game_name
+    """, (user["user_id"],))
+
+    scores = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return render_template("dashboard.html", scores=scores)
 
 @app.route("/profile", methods=["GET", "POST"])
 @login_required
@@ -108,6 +126,30 @@ def profile():
 @login_required
 def games2():
     return render_template("games2.html")
+
+@app.route("/save_score", methods=["POST"])
+@login_required
+def save_score():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    score = request.json["score"]
+    game_name = request.json["game_name"]
+
+    cursor.execute("SELECT user_id FROM users WHERE email=%s", (session["user"],))
+    user = cursor.fetchone()
+
+    if not user:
+        return {"status": "error", "message": "User tidak ditemukan"}
+
+    cursor.execute("""
+        INSERT INTO game_scores (user_id, game_name, score)
+        VALUES (%s, %s, %s)
+    """, (user["user_id"], game_name, score))
+
+    db.commit()
+
+    return {"status": "success"}
 
 @app.route("/home2")
 @login_required
@@ -169,6 +211,18 @@ def about():
 def play_pencil_push_up():
     return render_template("play_pencil_push_up.html")
 
+from game_state import pencil_state, brodie_state
+
+@socketio.on("pause_pencil")
+def handle_pause(data):
+    pencil_state["paused"] = data.get("paused", False)
+
+@socketio.on("reset_pencil")
+def handle_reset():
+    pencil_state["reset"] = True
+    pencil_frame_holder["running"] = False
+    time.sleep(0.2)
+
 @app.route("/start_game_pencil_push_up")
 @login_required
 def start_game_pencil_push_up():
@@ -183,6 +237,18 @@ def result_pencil_push_up():
 @login_required
 def play_bordie_strings():
     return render_template("play_bordie_strings.html")
+
+@socketio.on("pause_brodie")
+def handle_pause(data):
+    brodie_state["paused"] = data.get("paused", False)
+
+@socketio.on("reset_brodie")
+def handle_reset():
+    brodie_state["reset"] = True
+    brodie_state["paused"] = False
+    brodie_frame_holder["running"] = False
+    time.sleep(0.2)
+    brodie_state["reset"] = False
 
 @app.route("/start_game_bordie_strings")
 @login_required
@@ -332,37 +398,91 @@ def run_barrel():
 
 
 @socketio.on("start_brodie")
-def start_brodie():
-    thread = threading.Thread(target=run_brodie)
+def start_brodie(data=None):
+    email = data.get("email") if data else None
+
+    thread = threading.Thread(target=run_brodie, args=(email,))
     thread.start()
 
-def run_brodie():
+def run_brodie(email):
     try:
         brodie_frame_holder["running"] = True
+
         score = brodie_string_game.start_game(socketio, brodie_frame_holder)
+
+        # 🔥 SIMPAN KE DATABASE
+        if email:
+            db = get_db()
+            cursor = db.cursor(dictionary=True)
+
+            cursor.execute("SELECT user_id FROM users WHERE email=%s", (email,))
+            user = cursor.fetchone()
+
+            if user:
+                cursor.execute("""
+                    INSERT INTO game_scores (user_id, game_name, score)
+                    VALUES (%s, %s, %s)
+                """, (user["user_id"], "brodie_strings", score))
+
+                db.commit()
+
+            cursor.close()
+            db.close()
+
         socketio.emit("game_over", {"game": "brodie", "score": score})
+
     except Exception as e:
         print(f"[Brodie] Error: {e}")
         socketio.emit("game_over", {"game": "brodie", "score": 0})
+
     finally:
         brodie_frame_holder["running"] = False
 
 
 @socketio.on("start_pencil")
-def start_pencil():
-    thread = threading.Thread(target=run_pencil)
+def start_pencil(data=None):
+    if pencil_frame_holder["running"]:
+        return  # 🔥 cegah double start
+
+    email = data.get("email") if data else None
+
+    thread = threading.Thread(target=run_pencil, args=(email,))
     thread.start()
 
-def run_pencil():
+def run_pencil(email):
+    db = None
+    cursor = None
+
     try:
         pencil_frame_holder["running"] = True
         score = pencil_pushup.start_game(socketio, pencil_frame_holder)
+
+        db = get_db()
+        cursor = db.cursor(dictionary=True)
+
+        cursor.execute("SELECT user_id FROM users WHERE email=%s", (email,))
+        user = cursor.fetchone()
+
+        if user:
+            cursor.execute("""
+                INSERT INTO game_scores (user_id, game_name, score)
+                VALUES (%s, %s, %s)
+            """, (user["user_id"], "pencil_push_up", score))
+            db.commit()
+
         socketio.emit("game_over", {"game": "pencil", "score": score})
+
     except Exception as e:
         print(f"[Pencil] Error: {e}")
         socketio.emit("game_over", {"game": "pencil", "score": 0})
+
     finally:
         pencil_frame_holder["running"] = False
+
+        if cursor:
+            cursor.close()
+        if db:
+            db.close()
 
 
 if __name__ == "__main__":

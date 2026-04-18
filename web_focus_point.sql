@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2026 at 05:36 AM
+-- Generation Time: Apr 17, 2026 at 05:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -18,8 +18,22 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `focus_point`
+-- Database: `web_focus_point`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `game_scores`
+--
+
+CREATE TABLE `game_scores` (
+  `game_score_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `game_name` varchar(50) NOT NULL,
+  `score` int(11) NOT NULL,
+  `played_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -28,28 +42,28 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `username` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `password` varchar(255) NOT NULL
+  `password` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
-(12, 'Abc', 'abc@gmail.com', '$2y$10$eNVC3I9b5AUR13S9tkNUUuKVBioacj14l2/.IfUDBOjykDpbZKvkK');
 
 --
 -- Indexes for dumped tables
 --
 
 --
+-- Indexes for table `game_scores`
+--
+ALTER TABLE `game_scores`
+  ADD PRIMARY KEY (`game_score_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
@@ -57,10 +71,26 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `game_scores`
+--
+ALTER TABLE `game_scores`
+  MODIFY `game_score_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `game_scores`
+--
+ALTER TABLE `game_scores`
+  ADD CONSTRAINT `game_scores_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

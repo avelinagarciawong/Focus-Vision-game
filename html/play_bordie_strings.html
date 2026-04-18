@@ -49,18 +49,19 @@
             <div class="left">
                 <h2>Brodie String</h2>
                 <div class="buttons">
-                    <button id="pause-btn" class="btn">
+                    <button class="btn" id="pause-btn">
                         <img src="icon/Pause.png" class="pause-icon"> Pause
                     </button>
 
-                    <button id="reset-btn" class="btn">
+                    <button class="btn" id="reset-btn">
                         <img src="icon/Reset.png" class="reset-icon"> Reset
                     </button>
                 </div>
             </div>
             <div class="right">
-                <div class="user">Welcome, {{ username }}</div>
+                <div class="user">Welcome, {{username}}</div>
                 <div class="score">Score : 0</div>
+                <div id="timer">Time : 60</div>
             </div>
         </div>
 
@@ -69,7 +70,6 @@
             <div id="start-overlay">
                 <button id="start-btn">&#9654; Start Game</button>
             </div>
-            <div class="timer" id="timer">Time: 30</div>
             <img id="webcam-feed" alt="Webcam Feed">
         </div>
 
@@ -86,110 +86,96 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
 <script>
     const socket = io();
-
     let gameStarted = false;
     let isPaused = false;
-    let timeLeft = 30;
+    let timeLeft = 60;
     let timerInterval = null;
-    let currentScore = 0;
 
-    // ======================
-    // SCORE UPDATE
-    // ======================
+    function startTimer() {
+        const timerEl = document.getElementById("timer");
+
+        timerInterval = setInterval(function () {
+
+            if (!isPaused && gameStarted) {
+                timeLeft--;
+                timerEl.textContent = "Time : " + timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+
+                    // 🔥 stop game
+                    socket.emit("reset_brodie");
+
+                    window.location.href = "result_brodie_strings.html?score=" + score + "&time=" + (60 - timeLeft);
+                }
+            }
+
+        }, 1000);
+    }
+
     socket.on("score_update", function(data) {
-        if (!isPaused && data.game === "brodie") {
-            currentScore = data.score;
-            document.querySelector(".score").textContent = "Score : " + currentScore;
-        }
+        document.querySelector(".score").textContent = "Score : " + data.score;
     });
 
     socket.on("game_over", function(data) {
-        if (gameStarted && data.game === "brodie") {
+        if (gameStarted) {
+            clearInterval(timerInterval); // 🔥 penting
             window.location.href = "result_brodie_strings.html?score=" + data.score;
         }
     });
 
-    // ======================
-    // START GAME
-    // ======================
     document.getElementById("start-btn").addEventListener("click", function() {
         document.getElementById("start-overlay").style.display = "none";
-
         gameStarted = true;
-        isPaused = false;
-        timeLeft = 30;
-        currentScore = 0;
-
         document.querySelector(".score").textContent = "Score : 0";
-        document.getElementById("timer").textContent = "Time: 30";
 
-        socket.emit("start_brodie");
+        // 🔥 RESET TIMER DULU
+        timeLeft = 60;
+        clearInterval(timerInterval);
+        startTimer();  // 🔥 INI YANG KURANG
+
+        socket.emit("start_brodie", {
+            email: "{{ session['user'] }}"
+        });
 
         setTimeout(function() {
             document.getElementById("webcam-feed").src = "/video_feed/brodie?" + Date.now();
         }, 300);
-
-        startTimer();
     });
 
-    // ======================
-    // TIMER
-    // ======================
-    function startTimer() {
-        const timerElement = document.getElementById("timer");
+    document.getElementById("pause-btn").addEventListener("click", function () {
+    if (!gameStarted) return;
 
-        timerInterval = setInterval(function() {
-            if (!isPaused) {
-                timeLeft--;
-                timerElement.textContent = "Time: " + timeLeft;
+    isPaused = !isPaused;
 
-                if (timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    window.location.href = "result_brodie_strings.html?score=" + currentScore;
-                }
-            }
-        }, 1000);
+    socket.emit("pause_brodie", {
+        paused: isPaused
+    });
+
+    if (isPaused) {
+        this.innerHTML = '<img src="icon/icon_play.png" class="pause-icon"> Resume';
+    } else {
+        this.innerHTML = '<img src="icon/Pause.png" class="pause-icon"> Pause';
     }
-
-    // ======================
-    // PAUSE BUTTON
-    // ======================
-    document.getElementById("pause-btn").addEventListener("click", function() {
-        if (!gameStarted) return;
-
-        isPaused = !isPaused;
-
-        if (isPaused) {
-            this.innerHTML = '<img src="icon/icon_play.png" class="pause-icon"> Resume';
-        } else {
-            this.innerHTML = '<img src="icon/Pause.png" class="pause-icon"> Pause';
-        }
     });
 
-    // ======================
-    // RESET BUTTON
-    // ======================
-    document.getElementById("reset-btn").addEventListener("click", function() {
-        // stop timer
-        clearInterval(timerInterval);
+    document.getElementById("reset-btn").addEventListener("click", function () {
 
-        // reset state
+        socket.emit("reset_brodie");
+
+        clearInterval(timerInterval); // 🔥 penting
+
         gameStarted = false;
         isPaused = false;
-        timeLeft = 30;
-        currentScore = 0;
+        timeLeft = 60;
 
         // reset UI
         document.querySelector(".score").textContent = "Score : 0";
-        document.getElementById("timer").textContent = "Time: 30";
+        document.getElementById("timer").textContent = "Time : 60";
 
-        // stop webcam
         document.getElementById("webcam-feed").src = "";
-
-        // tampilkan overlay lagi
         document.getElementById("start-overlay").style.display = "flex";
 
-        // reset tombol pause
         document.getElementById("pause-btn").innerHTML =
             '<img src="icon/Pause.png" class="pause-icon"> Pause';
     });

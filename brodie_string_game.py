@@ -4,6 +4,8 @@ import random
 import threading
 import os
 
+from game_state import brodie_state
+
 MEDIAPIPE_AVAILABLE = False
 landmarker = None
 
@@ -78,7 +80,40 @@ def start_game(socketio, frame_holder):
     print("[Brodie] Game loop dimulai...")
     frame_count = 0
 
-    while True:
+    GAME_DURATION = 60  # 1 menit
+    start_time = time.time()
+    
+    while frame_holder["running"]:
+
+        # 🔥 TIMER CHECK
+        elapsed_time = time.time() - start_time
+        if elapsed_time >= GAME_DURATION:
+            print("[Brodie] Waktu habis")
+            break
+
+        remaining_time = int(GAME_DURATION - elapsed_time)
+        socketio.emit("timer_update", {
+            "game": "brodie",
+            "time": remaining_time
+        })
+
+        # 🔥 HANDLE PAUSE
+        if brodie_state["paused"]:
+            ret, frame = cap.read()
+            if ret:
+                frame = cv2.flip(frame, 1)
+                _, buffer = cv2.imencode('.jpg', frame)
+                with frame_holder["lock"]:
+                    frame_holder["frame"] = buffer.tobytes()
+            time.sleep(0.03)
+            continue
+
+        # 🔥 HANDLE RESET
+        if brodie_state.get("reset"):
+            print("[Brodie] Reset detected")
+            score = 0
+            break
+
         ret, frame = cap.read()
         if not ret:
             print(f"[Brodie] cap.read() gagal setelah {frame_count} frame")
@@ -89,6 +124,9 @@ def start_game(socketio, frame_holder):
         h, w, _ = frame.shape
 
         focused = False
+
+        last_score_time = 0
+        score_delay = 0.5
 
         if MEDIAPIPE_AVAILABLE and landmarker is not None:
             rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -103,13 +141,16 @@ def start_game(socketio, frame_holder):
                     focused = True
 
         if focused:
+            now = time.time()
             if focus_start is None:
-                focus_start = time.time()
-            elif time.time() - focus_start >= HOLD_TIME:
-                score += 1
-                target = random.choice(beads)
-                focus_start = None
-                socketio.emit("score_update", {"game": "brodie", "score": score})
+                focus_start = now
+            elif now - focus_start >= HOLD_TIME:
+                if now - last_score_time > score_delay:
+                    score += 1
+                    target = random.choice(beads)
+                    focus_start = None
+                    last_score_time = now
+                    socketio.emit("score_update", {"game": "brodie", "score": score})
         else:
             focus_start = None
 

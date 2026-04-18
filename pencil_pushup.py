@@ -4,6 +4,8 @@ import random
 import threading
 import os
 
+from game_state import pencil_state
+
 MEDIAPIPE_AVAILABLE = False
 landmarker = None
 
@@ -67,6 +69,7 @@ def start_game(socketio, frame_holder):
     max_depth = 140
     speed = 1
     direction = 1
+    pencil_state["reset"] = False
 
     score = 0
     FOCUS_MIN = 0.42
@@ -74,8 +77,29 @@ def start_game(socketio, frame_holder):
 
     print("[Pencil] Game loop dimulai...")
     frame_count = 0
+    
+    last_score_time = 0
+    score_delay = 0.3  # detik 
 
-    while True:
+    while frame_holder["running"]:
+
+        # 🔥 HANDLE PAUSE
+        if pencil_state["paused"]:
+            ret, frame = cap.read()
+            if ret:
+                frame = cv2.flip(frame, 1)
+                _, buffer = cv2.imencode('.jpg', frame)
+                with frame_holder["lock"]:
+                    frame_holder["frame"] = buffer.tobytes()
+            time.sleep(0.03)
+            continue
+
+        # 🔥 HANDLE RESET
+        if pencil_state.get("reset"):
+            print("[Pencil] Reset detected")
+            score = 0
+            break
+
         ret, frame = cap.read()
         if not ret:
             print(f"[Pencil] cap.read() gagal setelah {frame_count} frame")
@@ -96,23 +120,31 @@ def start_game(socketio, frame_holder):
                 lm = result.face_landmarks[0]
                 pos_l = (lm[468].x - lm[33].x) / (lm[133].x - lm[33].x + 1e-6)
                 pos_r = (lm[473].x - lm[362].x) / (lm[263].x - lm[362].x + 1e-6)
+
                 if FOCUS_MIN < pos_l < FOCUS_MAX and FOCUS_MIN < pos_r < FOCUS_MAX:
                     focused = True
 
+        # 🔥 UPDATE SCORE
         if focused:
-            depth += speed * direction
-            score += 1
-            socketio.emit("score_update", {"game": "pencil", "score": score})
+            now = time.time()
+            if now - last_score_time > score_delay:
+                depth += speed * direction
+                score += 1
+                last_score_time = now
+                socketio.emit("score_update", {"game": "pencil", "score": score})
 
+        # 🔥 GERAK OBJECT
         if depth >= max_depth:
             direction = -1
         elif depth <= min_depth:
             direction = 1
 
+        # 🔥 DRAW
         pencil_x = w // 2
         pencil_y = h // 2
         cv2.circle(frame, (pencil_x, pencil_y), depth // 2, (0, 0, 255), 2)
 
+        # 🔥 SEND FRAME
         _, buffer = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
         with frame_holder["lock"]:
             frame_holder["frame"] = buffer.tobytes()
@@ -120,6 +152,7 @@ def start_game(socketio, frame_holder):
         time.sleep(0.03)
 
     cap.release()
+    pencil_state["reset"] = False
     print(f"[Pencil] Game selesai. Frame: {frame_count}, Score: {score}")
 
     frame_holder["running"] = False

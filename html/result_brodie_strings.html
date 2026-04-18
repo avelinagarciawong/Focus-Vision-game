@@ -51,13 +51,13 @@
         <!-- Score -->
         <div class="card stat-box center">
             <h4>Score</h4>
-            <div class="big">42</div>
+            <div class="big" id="score-value">0</div>
         </div>
 
         <!-- Time -->
         <div class="card stat-box center">
             <h4>Time</h4>
-            <div class="big">1:00</div>
+            <div class="big" id="time-value">0</div>
         </div>
 
     </div>
@@ -76,6 +76,25 @@
     </div>
 
 </div>
+
+<script>
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    // ambil score & time dari URL
+    const score = getQueryParam("score") || 0;
+    const time = getQueryParam("time") || 60;
+
+    document.getElementById("score-value").textContent = score;
+
+    // format jadi mm:ss
+    let minutes = Math.floor(time / 60);
+    let seconds = time % 60;
+    document.getElementById("time-value").textContent =
+        minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+</script>
 
 </body>
 </html>
